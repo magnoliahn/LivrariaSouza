@@ -1,0 +1,88 @@
+﻿@model LivrariaSouza.Models.Models.Livro
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Livro</title>
+    <style>
+        .titulo-livros {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .livro-detalhes {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .livro-imagem-detalhes {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .col-md-4, .col-md-8 {
+            padding: 10px;
+        }
+
+        .col-md-4 {
+            flex-basis: 35%;
+        }
+
+        .col-md-8 {
+            flex-basis: 60%;
+        }
+
+        h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #666;
+        }
+
+            p strong {
+                color: #333;
+                font-weight: bold;
+            }
+    </style>
+</head>
+<body>
+    <h2 class="titulo-livros">Detalhes do Livro</h2>
+
+    <div class="livro-detalhes">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="@Model.Imagem" alt="@Model.Titulo" class="livro-imagem-detalhes" />
+            </div>
+            <div class="col-md-8">
+                <h3>@Model.Titulo</h3>
+                <p><strong>Autor:</strong> @Model.Autor</p>
+                <p><strong>Número de Páginas:</strong> @Model.NumeroPag</p>
+                <p><strong>Valor:</strong> @Model.Valor.ToString("C")</p>
+                <p><strong>Ano de Lançamento:</strong> @Model.AnoLancamento.ToShortDateString()</p>
+                <p><strong>Descrição:</strong> @Model.Descricao</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
