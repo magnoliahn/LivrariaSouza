@@ -23,7 +23,7 @@ public class HomeController : Controller
 
     public IActionResult DetalhesLivro(int id)
     {
-        var livro = _db.Livros.FirstOrDefault(l => l.Id == id);
+        var livro = _db.Livros.FirstOrDefault(livro => livro.Id == id);
         if (livro == null)
         {
             return NotFound();
