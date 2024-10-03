@@ -1,0 +1,101 @@
+﻿@model LivrariaSouza.Models.Models.Livro
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Livro</title>
+    <style>
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <h2>Editar Livro</h2>
+
+    <form asp-action="EditarDetalhesLivro" asp-controller="DetalhesLivro" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label for="Titulo">Título</label>
+            <input type="text" asp-for="Titulo" />
+        </div>
+
+        <div class="form-group">
+            <label for="Autor">Autor</label>
+            <input type="text" asp-for="Autor" />
+        </div>
+
+        <div class="form-group">
+            <label for="NumeroPag">Número de Páginas</label>
+            <input type="number" asp-for="NumeroPag" />
+        </div>
+
+        <div class="form-group">
+            <label for="Valor">Valor</label>
+            <input type="number" asp-for="Valor" step="0.01" />
+        </div>
+
+        <div class="form-group">
+            <label for="AnoLancamento">Ano de Lançamento</label>
+            <input type="date" asp-for="AnoLancamento" />
+        </div>
+
+        <div class="form-group">
+            <label for="Descricao">Descrição</label>
+            <textarea asp-for="Descricao"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="QntdEstoque">Quantidade em Estoque</label>
+            <input type="number" asp-for="QntdEstoque" />
+        </div>
+
+        <div class="form-group">
+            <label for="Imagem">Imagem (URL)</label>
+            <input type="text" asp-for="Imagem" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        <a href="@Url.Action("MostraDetalhesLivro", new { id = Model.Id })" class="btn btn-danger">Cancelar</a>
+    </form>
+</body>
+</html>
