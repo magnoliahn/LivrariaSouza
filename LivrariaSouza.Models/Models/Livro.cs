@@ -19,8 +19,6 @@ namespace LivrariaSouza.Models.Models
         [Required]
         public DateTime AnoLancamento { get; set; }
         [Required]
-        public bool Disponibilidade { get; set; }
-        [Required]
         public int QntdEstoque { get; set; }
         [Required]
         [MaxLength(500)]
