@@ -7,6 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Livro</title>
     <style>
+        /* Estilos gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
         .titulo-livros {
             text-align: center;
             font-size: 2.5rem;
@@ -60,10 +68,50 @@
             color: #666;
         }
 
-            p strong {
-                color: #333;
-                font-weight: bold;
-            }
+        p strong {
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* Estilo dos botões */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        /* Centralização dos botões */
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -85,14 +133,23 @@
                 <p><strong>Disponibilidade:</strong> @(Model.Disponibilidade ? "Disponível" : "Esgotado")</p>
                 @if (Model.Disponibilidade && Model.QntdEstoque > 0)
                 {
-                    <p><strong>Quantidade em Estoque:</strong> @Model.QntdEstoque</p>
+                        <p><strong>Quantidade em Estoque:</strong> @Model.QntdEstoque</p>
                 }
                 else if (!Model.Disponibilidade)
                 {
-                    <p><strong>Quantidade em Estoque:</strong> Esgotado</p>
+                        <p><strong>Quantidade em Estoque:</strong> Esgotado</p>
                 }
             </div>
+        </div>
+        <!-- Botões de Ação -->
+        <div class="button-container">
+            <a href="@Url.Action("EditarLivro", "DetalhesLivro", new { id = Model.Id })" class="btn btn-primary">Editar</a>
 
+            <form asp-action="DeletaLivro" asp-controller="DetalhesLivro" method="post" style="display:inline-block;">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja deletar este livro?');">Deletar</button>
+            </form>
         </div>
     </div>
 </body>

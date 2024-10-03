@@ -21,15 +21,6 @@ public class HomeController : Controller
         return View(livros);
     }
 
-    public IActionResult DetalhesLivro(int id)
-    {
-        var livro = _db.Livros.FirstOrDefault(livro => livro.Id == id);
-        if (livro == null)
-        {
-            return NotFound();
-        }
-        return View(livro);
-    }
     public IActionResult CriarLivro()
     {
         return View();

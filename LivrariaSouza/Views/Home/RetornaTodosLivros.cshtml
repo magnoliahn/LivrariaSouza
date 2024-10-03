@@ -92,12 +92,12 @@
         {
             <div class="col-md-3">
                 <div class="card mb-4">
-                    <a href="@Url.Action("DetalhesLivro", "Home", new { id = livro.Id })">
+                    <a href="@Url.Action("MostraDetalhesLivro", "DetalhesLivro", new { id = livro.Id })">
                         <img src="@livro.Imagem" class="card-img-top" alt="@livro.Titulo" />
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">
-                            <a href="@Url.Action("DetalhesLivro", "Home", new { id = livro.Id })">@livro.Titulo</a>
+                            <a href="@Url.Action("MostraDetalhesLivro", "DetalhesLivro", new { id = livro.Id })">@livro.Titulo</a>
                         </h5>
                         <p class="card-value">@livro.Valor.ToString("C")</p>
                     </div>
