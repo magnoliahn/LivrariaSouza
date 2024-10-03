@@ -6,10 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar Livro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> <!-- Link para a fonte Roboto -->
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            font-family: 'Roboto', sans-serif; /* Usando a fonte Roboto */
+            background: linear-gradient(to bottom right, #f0f8ff, #e6e6fa); /* Fundo com gradiente suave */
             margin: 0;
             padding: 20px;
         }
@@ -18,6 +19,8 @@
             text-align: center;
             color: #333;
             margin-bottom: 30px;
+            font-size: 2rem; /* Estilização igual à página anterior */
+            font-weight: bold; /* Estilização igual à página anterior */
         }
 
         form {
@@ -26,8 +29,13 @@
             padding: 20px;
             background-color: #fff;
             border-radius: 10px;
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
         }
+
+            form:hover {
+                transform: translateY(-2px); /* Efeito de levitação ao passar o mouse */
+            }
 
         div {
             margin-bottom: 15px;
@@ -49,7 +57,8 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para os campos de entrada */
+            transition: border-color 0.3s, box-shadow 0.3s; /* Efeito de transição suave */
         }
 
             input[type="text"]:focus,
@@ -58,6 +67,7 @@
             textarea:focus {
                 border-color: #007bff;
                 outline: none;
+                box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5); /* Efeito de foco nos campos */
             }
 
         textarea {
@@ -75,20 +85,23 @@
             border-radius: 5px;
             font-size: 1.2rem;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s; /* Efeito de transição suave */
         }
 
             button:hover {
                 background-color: #0056b3;
+                transform: scale(1.05); /* Efeito de aumento ao passar o mouse */
             }
 
-        #estoqueDiv {
-            display: none; /* Inicialmente escondido, será mostrado com JavaScript */
+        #statusDiv {
+            font-weight: bold; /* Negrito para o status */
+            font-size: 1.1rem; /* Aumentar um pouco o tamanho da fonte */
+            color: #007bff; /* Cor do status */
         }
     </style>
 </head>
 <body>
-    <h2>Adicionar livro</h2>
+    <h2>Adicionar Livro</h2>
     <form asp-action="CriarLivro" method="post">
         <div>
             <label>Título:</label>
@@ -119,28 +132,30 @@
             <input type="text" asp-for="Imagem" required />
         </div>
         <div>
-            <label>Disponibilidade:</label>
-            <input type="checkbox" asp-for="Disponibilidade" onchange="toggleEstoque(this)" />
-        </div>
-        <div id="estoqueDiv">
             <label>Quantidade em Estoque:</label>
-            <input type="number" asp-for="QntdEstoque" />
+            <input type="number" asp-for="QntdEstoque" oninput="verificarEstoque()" />
+        </div>
+        <div id="statusDiv">
+            <p>Status: <span id="statusText">Disponível</span></p>
         </div>
         <button type="submit">Criar Livro</button>
     </form>
 
     <script>
-        function toggleEstoque(checkbox) {
-            const estoqueDiv = document.getElementById('estoqueDiv');
-            if (!checkbox.checked) {
-                estoqueDiv.querySelector('input').value = ''; // Limpa o campo de quantidade
+        function verificarEstoque() {
+            const estoque = document.querySelector('input[asp-for="QntdEstoque"]').value;
+            const statusText = document.getElementById('statusText');
+
+            if (estoque === "" || estoque == 0) {
+                statusText.innerText = "Esgotado";
+            } else {
+                statusText.innerText = "Disponível";
             }
-            estoqueDiv.style.display = checkbox.checked ? 'block' : 'none'; // Mostra/oculta o campo de estoque
         }
 
         // Inicializa a exibição correta ao carregar a página
         document.addEventListener('DOMContentLoaded', function () {
-            toggleEstoque(document.querySelector('input[type="checkbox"]'));
+            verificarEstoque();
         });
     </script>
 </body>

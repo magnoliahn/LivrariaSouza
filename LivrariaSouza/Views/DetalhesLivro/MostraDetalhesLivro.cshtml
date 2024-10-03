@@ -6,13 +6,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Livro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> <!-- Link para a fonte Roboto -->
     <style>
         /* Estilos gerais */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Roboto', sans-serif; /* Usando a fonte Roboto */
+            background: linear-gradient(to bottom right, #f0f8ff, #e6e6fa); /* Fundo com gradiente suave */
             margin: 0;
-            padding: 0;
+            padding: 20px;
         }
 
         .titulo-livros {
@@ -63,21 +64,21 @@
         }
 
         p {
-            font-size: 1.2rem;
+            font-size: 1rem; /* Diminui a fonte do restante do texto */
             line-height: 1.6;
             color: #666;
         }
 
-        p strong {
-            color: #333;
-            font-weight: bold;
-        }
+            p strong {
+                color: #333;
+                font-weight: bold;
+            }
 
         /* Estilo dos botões */
         .btn {
             display: inline-block;
-            padding: 10px 20px;
-            font-size: 1rem;
+            padding: 10px 25px; /* Aumenta o tamanho dos botões */
+            font-size: 1.0rem; /* Aumenta a fonte dos botões */
             font-weight: bold;
             text-align: center;
             border-radius: 5px;
@@ -92,9 +93,9 @@
             border: none;
         }
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
+            .btn-primary:hover {
+                background-color: #0056b3;
+            }
 
         .btn-danger {
             background-color: #dc3545;
@@ -102,16 +103,15 @@
             border: none;
         }
 
-        .btn-danger:hover {
-            background-color: #c82333;
-        }
+            .btn-danger:hover {
+                background-color: #c82333;
+            }
 
         /* Centralização dos botões */
         .button-container {
             text-align: center;
             margin-top: 20px;
         }
-
     </style>
 </head>
 <body>
@@ -130,18 +130,17 @@
                 <p><strong>Data de Lançamento:</strong> @Model.AnoLancamento.ToShortDateString()</p>
                 <p><strong>Descrição:</strong> @Model.Descricao</p>
 
-                <p><strong>Disponibilidade:</strong> @(Model.Disponibilidade ? "Disponível" : "Esgotado")</p>
-                @if (Model.Disponibilidade && Model.QntdEstoque > 0)
+                <p><strong>Status:</strong> @(Model.QntdEstoque > 0 ? "Disponível" : "Esgotado")</p>
+                @if (Model.QntdEstoque > 0)
                 {
-                        <p><strong>Quantidade em Estoque:</strong> @Model.QntdEstoque</p>
+                    <p><strong>Quantidade em Estoque:</strong> @Model.QntdEstoque</p>
                 }
-                else if (!Model.Disponibilidade)
+                else
                 {
-                        <p><strong>Quantidade em Estoque:</strong> Esgotado</p>
+                    <p><strong>Quantidade em Estoque:</strong> Esgotado</p>
                 }
             </div>
         </div>
-        <!-- Botões de Ação -->
         <div class="button-container">
             <a href="@Url.Action("EditarLivro", "DetalhesLivro", new { id = Model.Id })" class="btn btn-primary">Editar</a>
 
