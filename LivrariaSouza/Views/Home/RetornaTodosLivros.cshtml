@@ -28,22 +28,24 @@
         .row {
             display: flex;
             flex-wrap: wrap;
-            justify-content: flex-start; /* Ajusta os cards para começar à esquerda */
-            gap: 10px; /* Reduz o espaçamento entre os cards */
-            margin: 0; /* Remove a margem para compactar os cards */
-            max-width: 1200px; /* Limita a largura máxima para centralizar o conteúdo */
-            padding: 0 10px; /* Adiciona um pequeno padding lateral */
+            justify-content: space-between; /* Distribui os cards uniformemente */
+            gap: 10px; /* Espaçamento entre os cards */
+            margin: 0 auto; /* Centraliza os cards */
+            max-width: 100%; /* Limita a largura máxima para caber 5 cards */
         }
 
         .card {
-            width: 220px; /* Ajustei a largura dos cards */
-            height: 405px; /* Aumentei a altura dos cards para comportar a capa */
+            flex: 0 0 calc(20% - 10px); /* Cada card terá 20% de largura menos o espaço entre eles */
+            height: 405px; /* Mantém a altura dos cards */
             border: 1px solid #ddd;
             border-radius: 8px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             transition: transform 0.3s;
+            margin-bottom: 20px; /* Espaçamento inferior entre as linhas de cards */
         }
+
+
 
             .card:hover {
                 transform: scale(1.05);
@@ -103,7 +105,7 @@
     <div class="row">
         @foreach (var livro in Model)
         {
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="card mb-4">
                     <a href="@Url.Action("MostraDetalhesLivro", "DetalhesLivro", new { id = livro.Id })">
                         <img src="@livro.Imagem" class="card-img-top" alt="@livro.Titulo" />
