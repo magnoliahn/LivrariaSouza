@@ -127,6 +127,7 @@
         <div>
             <label>Título:</label>
             <input type="text" asp-for="Titulo" required />
+            <span asp-validation-for="Titulo" class="text-danger"></span> <!-- Exibe mensagem de erro -->
         </div>
         <div>
             <label>Autor:</label>
@@ -137,7 +138,12 @@
             <input type="number" asp-for="NumeroPag" required />
         </div>
         <div>
-            <label>Valor (R$):</label>
+            <label>Preço de venda (R$):</label>
+            <input type="text" asp-for="ValorString" required />
+            <span asp-validation-for="ValorString" class="text-danger"></span> <!-- Exibe mensagem de erro -->
+        </div>
+        <div>
+            <label>Preço de custo (R$):</label>
             <input type="text" asp-for="ValorString" required />
             <span asp-validation-for="ValorString" class="text-danger"></span> <!-- Exibe mensagem de erro -->
         </div>

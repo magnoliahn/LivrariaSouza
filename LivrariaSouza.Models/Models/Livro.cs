@@ -22,6 +22,9 @@ namespace LivrariaSouza.Models.Models
         [Required]
         public decimal Valor { get; set; }
         [Required]
+        public decimal Custo { get; set; }
+
+        [Required]
         public DateTime AnoLancamento { get; set; }
         [Required]
         public int QntdEstoque { get; set; }
