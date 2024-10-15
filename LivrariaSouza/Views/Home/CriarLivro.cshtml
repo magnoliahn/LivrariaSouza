@@ -138,7 +138,8 @@
         </div>
         <div>
             <label>Valor (R$):</label>
-            <input type="text" asp-for="Valor" required />
+            <input type="text" asp-for="ValorString" required />
+            <span asp-validation-for="ValorString" class="text-danger"></span> <!-- Exibe mensagem de erro -->
         </div>
         <div>
             <label>Data de Lançamento:</label>

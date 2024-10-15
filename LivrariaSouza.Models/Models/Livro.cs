@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LivrariaSouza.Models.Models
 {
@@ -14,6 +15,10 @@ namespace LivrariaSouza.Models.Models
         public string Autor {  get; set; }
         [Required]
         public int NumeroPag {  get; set; }
+
+        [NotMapped] // Isso impede que a propriedade seja mapeada no banco de dados
+        public string ValorString { get; set; } // Propriedade temporária para entrada
+
         [Required]
         public decimal Valor { get; set; }
         [Required]
