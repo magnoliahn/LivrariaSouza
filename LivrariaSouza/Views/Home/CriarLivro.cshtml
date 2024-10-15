@@ -111,9 +111,18 @@
     </style>
 </head>
 <body>
-
     <a href="@Url.Action("RetornaTodosLivros", "Home")" class="home-icon"><i class="fas fa-home"></i></a>
     <h2>Adicionar Livro</h2>
+
+    <!-- Alerta de Mensagem -->
+    @if (ViewData["MensagemEstoqueNegativo"] != null)
+    {
+        <div class="alert alert-@ViewData["TipoMensagem"] alert-dismissible fade show" role="alert">
+            @ViewData["MensagemEstoqueNegativo"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <form asp-action="CriarLivro" method="post">
         <div>
             <label>Título:</label>
@@ -158,7 +167,7 @@
             const estoque = document.querySelector('input[id="QntdEstoque"]').value;
             const statusText = document.getElementById('statusText');
 
-            if (estoque === "" || estoque == 0) {
+            if (estoque === "" || estoque <= 0) {
                 statusText.innerText = "Esgotado";
             } else {
                 statusText.innerText = "Disponível";

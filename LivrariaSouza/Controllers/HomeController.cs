@@ -29,10 +29,20 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult CriarLivro(Livro livro)
     {
+        if (livro.QntdEstoque < 0)
+        {
+            ViewData["MensagemEstoqueNegativo"] = "O estoque não pode ser negativo.";
+            ViewData["TipoMensagem"] = "danger"; // Usando 'danger' para um alerta vermelho
+            return View(livro);
+        }
+
         if (ModelState.IsValid)
         {
             _db.Livros.Add(livro);
             _db.SaveChanges();
+            TempData["MensagemLivroAdicionado"] = "Livro adicionado com sucesso!";
+            TempData["TipoMensagem"] = "success"; // Alerta de sucesso
+
             return RedirectToAction("RetornaTodosLivros");
         }
         return View(livro);
