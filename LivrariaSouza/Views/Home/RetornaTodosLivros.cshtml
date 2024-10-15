@@ -112,6 +112,23 @@
 <body>
     <h2 class="titulo-livros">Livraria Souza</h2>
 
+    <!-- Alerta de Mensagem -->
+    @if (TempData["MensagemLivroAdicionado"] != null)
+    {
+        <div class="alert alert-@TempData["TipoMensagem"] alert-dismissible fade show" role="alert">
+            @TempData["MensagemLivroAdicionado"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["MensagemLivroDeletado"] != null)
+    {
+        <div class="alert alert-@TempData["TipoMensagem"] alert-dismissible fade show" role="alert">
+            @TempData["MensagemLivroDeletado"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <a href="@Url.Action("CriarLivro", "Home")" class="btn btn-primary">Adicionar Livro</a>
 
     <div class="row">
