@@ -16,7 +16,7 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    // O valor padrão do HSTS é de 30 dias. Você pode querer mudar isso para cenários de produção.
     app.UseHsts();
 }
 
@@ -26,6 +26,10 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "admin",
+    pattern: "admin/{controller=Home}/{action=RetornaTodosLivros}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

@@ -31,6 +31,10 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult CriarLivro(Livro livro)
     {
+        if (livro.Titulo.Length > 100)
+        {
+            ModelState.AddModelError("Titulo","O Titulo do livro não pode conter mais de 100 caracteres.");
+        }
         // Tente converter o valor de string para decimal
         if (!decimal.TryParse(livro.ValorString.Replace(".", ","), NumberStyles.Any, new CultureInfo("pt-BR"), out decimal valorConvertido))
         {
@@ -43,6 +47,19 @@ public class HomeController : Controller
         else
         {
             livro.Valor = valorConvertido; // Atribui o valor convertido à propriedade real
+        }
+        // mesma lógica para o preço de custo
+        if (!decimal.TryParse(livro.ValorString.Replace(".", ","), NumberStyles.Any, new CultureInfo("pt-BR"), out decimal custoConvertido))
+        {
+            ModelState.AddModelError("ValorString", "O valor deve conter somente números e pode incluir uma vírgula ou ponto para os centavos.");
+        }
+        else if (custoConvertido < 0)
+        {
+            ModelState.AddModelError("ValorString", "O valor não pode ser negativo.");
+        }
+        else
+        {
+            livro.Custo = custoConvertido; // Atribui o valor convertido à propriedade real
         }
 
         if (livro.QntdEstoque < 0)
