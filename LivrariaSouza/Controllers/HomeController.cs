@@ -80,4 +80,32 @@ public class HomeController : Controller
         }
         return View(livro);
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult DeletaLivrosEmBloco(int[] livroIds)
+    {
+        if (livroIds == null || livroIds.Length == 0)
+        {
+            TempData["MensagemLivroDeletado"] = "Nenhum livro selecionado para excluir.";
+            TempData["TipoMensagem"] = "error";
+            return RedirectToAction("RetornaTodosLivros"); // Redireciona para a lista de livros
+        }
+
+        var livrosSelecionados = _db.Livros.Where(l => livroIds.Contains(l.Id)).ToList();
+        if (!livrosSelecionados.Any())
+        {
+            TempData["MensagemLivroDeletado"] = "Nenhum livro encontrado para excluir.";
+            TempData["TipoMensagem"] = "error";
+            return RedirectToAction("RetornaTodosLivros"); // Redireciona para a lista de livros
+        }
+
+        _db.Livros.RemoveRange(livrosSelecionados);
+        _db.SaveChanges();
+
+        TempData["MensagemLivroDeletado"] = "Livros excluídos com sucesso.";
+        TempData["TipoMensagem"] = "success";
+
+        return RedirectToAction("RetornaTodosLivros"); // Redireciona para a lista de livros
+    }
 }
