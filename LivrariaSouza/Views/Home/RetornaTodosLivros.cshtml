@@ -1,5 +1,4 @@
-﻿﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -16,61 +15,58 @@
 
         .titulo-livros {
             text-align: center;
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: bold;
-            margin: 50px 0 30px;
+            margin: 40px 0 30px;
             color: #333;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .alert {
+            margin: 20px auto;
+            max-width: 600px;
+            text-align: center;
         }
 
         .row {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 30px;
+            gap: 20px;
             margin: 0 auto;
-            max-width: 1200px;
+            max-width: 100%;
         }
 
         .card {
-            flex: 0 0 calc(20% - 20px);
-            height: 380px; /* Ajusta a altura do card */
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+            flex: 0 0 calc(20% - 10px);
+            height: 405px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            background-color: white;
-            margin-bottom: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            transition: transform 0.3s;
+            margin-bottom: 20px;
         }
 
             .card:hover {
                 transform: scale(1.05);
-                box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
             }
 
             .card img {
                 width: 100%;
-                height: 200px; /* Altura da imagem ajustada para evitar esticamento */
-                object-fit: contain; /* Preserva a proporção da imagem sem cortá-la */
-                background-color: #f0f0f0;
+                height: 300px;
+                object-fit: cover;
             }
 
         .card-body {
-            padding: 15px;
+            padding: 10px;
             text-align: center;
-            flex-grow: 1;
         }
 
         .card-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             margin: 10px 0;
             color: #444;
-            transition: color 0.3s;
         }
 
             .card-title a {
@@ -78,15 +74,10 @@
                 text-decoration: none;
             }
 
-                .card-title a:hover {
-                    color: #007bff;
-                }
-
         .card-value {
             font-size: 1rem;
             color: #28a745;
             font-weight: bold;
-            margin-top: 5px;
         }
 
         .btn-primary {
@@ -99,13 +90,26 @@
             border-radius: 5px;
             text-decoration: none;
             text-align: center;
-            box-shadow: 0px 4px 8px rgba(0, 123, 255, 0.4);
-            transition: background-color 0.3s, box-shadow 0.3s;
         }
 
             .btn-primary:hover {
                 background-color: #0056b3;
-                box-shadow: 0px 6px 12px rgba(0, 123, 255, 0.6);
+            }
+
+        /* Adicionando estilo para o botão de excluir */
+        #btn-excluir {
+            display: none;
+            margin-top: 20px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            #btn-excluir:hover {
+                background-color: #c82333;
             }
     </style>
 </head>
@@ -129,6 +133,13 @@
         </div>
     }
 
+    <form id="form-excluir-livros" asp-action="DeletaLivrosEmBloco" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="livroIds" id="livroIds" />
+        <button id="btn-excluir" type="submit">Excluir Selecionados</button>
+    </form>
+
+    <input type="checkbox" id="select-all" /> Selecionar Todos
     <a href="@Url.Action("CriarLivro", "Home")" class="btn btn-primary">Adicionar Livro</a>
 
     <div class="row">
@@ -136,6 +147,7 @@
         {
             <div class="col-md-2">
                 <div class="card mb-4">
+                    <input type="checkbox" class="book-checkbox" name="livroIds" value="@livro.Id" />
                     <a href="@Url.Action("MostraDetalhesLivro", "DetalhesLivro", new { id = livro.Id })">
                         <img src="@livro.Imagem" class="card-img-top" alt="@livro.Titulo" />
                     </a>
@@ -148,5 +160,31 @@
             </div>
         }
     </div>
+
+    <script>
+        const checkboxes = document.querySelectorAll('.book-checkbox');
+        const selectAllCheckbox = document.getElementById('select-all');
+        const deleteButton = document.getElementById('btn-excluir');
+
+        selectAllCheckbox.addEventListener('change', function () {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            toggleDeleteButton();
+        });
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', toggleDeleteButton);
+        });
+
+        function toggleDeleteButton() {
+            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            deleteButton.style.display = anyChecked ? 'block' : 'none';
+            document.getElementById('livroIds').value = Array.from(checkboxes)
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.value)
+                .join(',');
+        }
+    </script>
 </body>
 </html>
