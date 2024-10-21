@@ -2,7 +2,6 @@ using LivrariaSouza.DataAccess;
 using LivrariaSouza.DataAccess.Repository.Services;
 using LivrariaSouza.Models.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 
 public class HomeController : Controller
 {
@@ -33,28 +32,34 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult CriarLivro(Livro livro)
     {
+        ModelState.Clear(); // Limpa erros automáticos
+
         // Valida se título tem no max 100 caracteres
         if (livro.Titulo.Length > 100)
         {
             ModelState.AddModelError("Titulo","O Titulo do livro não pode conter mais de 100 caracteres.");
         }
 
+        var valorVenda = _valoresServices.ValidarCaracteres(livro.ValorVendaString);
+
         // Valida se valor escolhido foi digitado corretamente
-        if (_valoresServices.ValidarCaracteres(livro.ValorVendaString) is string stringValorVenda)
+        if (valorVenda is string stringValorVenda)
         {
             ModelState.AddModelError("ValorVendaString", stringValorVenda);
         }
-        else if(_valoresServices.ValidarCaracteres(livro.ValorVendaString) is decimal decimalValorVenda)
+        else if(valorVenda is decimal decimalValorVenda)
         {
             livro.ValorVenda = decimalValorVenda;
         }
 
         // Mesma lógica para o valor de compra.
-        if (_valoresServices.ValidarCaracteres(livro.ValorCompraString) is string stringValorCompra)
+        var valorCompra = _valoresServices.ValidarCaracteres(livro.ValorCompraString);
+
+        if (valorCompra is string stringValorCompra)
         {
             ModelState.AddModelError("ValorCompraString", stringValorCompra);
         }
-        else if (_valoresServices.ValidarCaracteres(livro.ValorCompraString) is decimal decimalValorCompra)
+        else if (valorCompra is decimal decimalValorCompra)
         {
             livro.ValorCompra = decimalValorCompra;
         }
@@ -66,7 +71,7 @@ public class HomeController : Controller
             ViewData["TipoMensagem"] = "danger"; // Usando 'danger' para um alerta vermelho
             return View(livro);
         }
-
+        
         if (ModelState.IsValid)
         {
             _db.Livros.Add(livro);
