@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 
 namespace LivrariaSouza.Models.Models
 {
@@ -17,15 +18,22 @@ namespace LivrariaSouza.Models.Models
         public int NumeroPag {  get; set; }
 
         [NotMapped] // Isso impede que a propriedade seja mapeada no banco de dados
-        public string ValorString { get; set; } // Propriedade temporária para entrada
+        public string? ValorVendaString { get; set; } // Propriedade temporária para entrada
+        [NotMapped] // Isso impede que a propriedade seja mapeada no banco de dados
+        public string? ValorCompraString { get; set; } // Propriedade temporária para entrada
 
         [Required]
-        public decimal Valor { get; set; }
+        [Range(0.01, double.MaxValue, ErrorMessage = "O valor de venda deve ser positivo.")]
+        public decimal ValorVenda { get; set; }
+
         [Required]
-        public decimal Custo { get; set; }
+        [Range(0.01, double.MaxValue, ErrorMessage = "O valor de compra deve ser positivo.")]
+        public decimal ValorCompra { get; set; }
 
         [Required]
         public DateTime AnoLancamento { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "A quantidade em estoque não pode ser negativa.")]
         [Required]
         public int QntdEstoque { get; set; }
         [Required]

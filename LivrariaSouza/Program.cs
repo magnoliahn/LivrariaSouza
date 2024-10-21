@@ -1,10 +1,12 @@
 using LivrariaSouza.DataAccess;
+using LivrariaSouza.DataAccess.Repository.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ValoresServices>(); // Serviço de valores
+builder.Services.AddControllersWithViews(); // Adiciona suporte a controladores e views
 
 // Configuração do banco de dados (por exemplo, usando SQL Server)
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -15,18 +17,18 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    // O valor padrão do HSTS é de 30 dias. Você pode querer mudar isso para cenários de produção.
-    app.UseHsts();
+    app.UseExceptionHandler("/Home/Error"); // Lida com erros na produção
+    app.UseHsts(); // HSTS
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFiles(); // Ativa arquivos estáticos
 
-app.UseRouting();
+app.UseRouting(); // Ativa roteamento
 
-app.UseAuthorization();
+app.UseAuthorization(); // Ativa autorização
 
+// Define rotas de controlador
 app.MapControllerRoute(
     name: "admin",
     pattern: "admin/{controller=Home}/{action=RetornaTodosLivros}/{id?}");
@@ -35,4 +37,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();
+app.Run(); // Inicia o aplicativo

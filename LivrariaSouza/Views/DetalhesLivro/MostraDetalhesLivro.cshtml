@@ -137,8 +137,8 @@
                 <h3>@Model.Titulo</h3>
                 <p><strong>Autor:</strong> @Model.Autor</p>
                 <p><strong>Número de Páginas:</strong> @Model.NumeroPag</p>
-                <p><strong>Preço de venda:</strong> @Model.Valor.ToString("C")</p>
-                <p><strong>Preço de custo:</strong> @Model.Custo.ToString("C")</p>
+                <p><strong>Valor de venda:</strong> @Model.ValorVenda.ToString("C")</p>
+                <p><strong>Valor de custo:</strong> @Model.ValorCompra.ToString("C")</p>
                 <p><strong>Data de Lançamento:</strong> @Model.AnoLancamento.ToShortDateString()</p>
                 <p><strong>Descrição:</strong> @Model.Descricao</p>
 
@@ -154,7 +154,7 @@
             </div>
         </div>
         <div class="button-container">
-            <a href="@Url.Action("EditarLivro", "DetalhesLivro", new { id = Model.Id })" class="btn btn-primary">Editar</a>
+            <a href="@Url.Action("CarregarFormulario", "DetalhesLivro", new { id = Model.Id })" class="btn btn-primary">Editar</a>
 
             <form asp-action="DeletaLivro" asp-controller="DetalhesLivro" method="post" style="display:inline-block;">
                 @Html.AntiForgeryToken()
