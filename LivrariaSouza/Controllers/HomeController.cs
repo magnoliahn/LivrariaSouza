@@ -1,16 +1,18 @@
 using LivrariaSouza.DataAccess;
+using LivrariaSouza.DataAccess.Repository.Services;
 using LivrariaSouza.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
-using System.Text.RegularExpressions;
 
 public class HomeController : Controller
 {
     private readonly AppDbContext _db;
+    private readonly ValoresServices _valoresServices;
 
-    public HomeController(AppDbContext db)
+    public HomeController(AppDbContext db, ValoresServices valoresServices)
     {
         _db = db;
+        _valoresServices = valoresServices;
     }
     public IActionResult Index()
     {
@@ -31,37 +33,33 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult CriarLivro(Livro livro)
     {
+        // Valida se título tem no max 100 caracteres
         if (livro.Titulo.Length > 100)
         {
             ModelState.AddModelError("Titulo","O Titulo do livro não pode conter mais de 100 caracteres.");
         }
-        // Tente converter o valor de string para decimal
-        if (!decimal.TryParse(livro.ValorString.Replace(".", ","), NumberStyles.Any, new CultureInfo("pt-BR"), out decimal valorConvertido))
+
+        // Valida se valor escolhido foi digitado corretamente
+        if (_valoresServices.ValidarCaracteres(livro.ValorVendaString) is string stringValorVenda)
         {
-            ModelState.AddModelError("ValorString", "O valor deve conter somente números e pode incluir uma vírgula ou ponto para os centavos.");
+            ModelState.AddModelError("ValorVendaString", stringValorVenda);
         }
-        else if (valorConvertido < 0)
+        else if(_valoresServices.ValidarCaracteres(livro.ValorVendaString) is decimal decimalValorVenda)
         {
-            ModelState.AddModelError("ValorString", "O valor não pode ser negativo.");
-        }
-        else
-        {
-            livro.Valor = valorConvertido; // Atribui o valor convertido à propriedade real
-        }
-        // mesma lógica para o preço de custo
-        if (!decimal.TryParse(livro.ValorString.Replace(".", ","), NumberStyles.Any, new CultureInfo("pt-BR"), out decimal custoConvertido))
-        {
-            ModelState.AddModelError("ValorString", "O valor deve conter somente números e pode incluir uma vírgula ou ponto para os centavos.");
-        }
-        else if (custoConvertido < 0)
-        {
-            ModelState.AddModelError("ValorString", "O valor não pode ser negativo.");
-        }
-        else
-        {
-            livro.Custo = custoConvertido; // Atribui o valor convertido à propriedade real
+            livro.ValorVenda = decimalValorVenda;
         }
 
+        // Mesma lógica para o valor de compra.
+        if (_valoresServices.ValidarCaracteres(livro.ValorCompraString) is string stringValorCompra)
+        {
+            ModelState.AddModelError("ValorCompraString", stringValorCompra);
+        }
+        else if (_valoresServices.ValidarCaracteres(livro.ValorCompraString) is decimal decimalValorCompra)
+        {
+            livro.ValorCompra = decimalValorCompra;
+        }
+
+        // Verifica se estoque é negativo
         if (livro.QntdEstoque < 0)
         {
             ViewData["MensagemEstoqueNegativo"] = "O estoque não pode ser negativo.";

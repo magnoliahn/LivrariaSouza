@@ -22,9 +22,9 @@ namespace LivrariaSouza.Controllers
             return View(livro);
         }
 
-        public IActionResult EditarLivro(int id) // Carrega página para editar os detalhes do livro
+        public IActionResult CarregarFormulario(int Id) // Carrega página para editar os detalhes do livro
         {
-            var livro = _db.Livros.FirstOrDefault(l => l.Id == id);
+            var livro = _db.Livros.FirstOrDefault(l => l.Id == Id);
             if (livro == null)
             {
                 return NotFound();
@@ -33,27 +33,36 @@ namespace LivrariaSouza.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditarDetalhesLivro(int Id, Livro livroEditado)
+        [ValidateAntiForgeryToken] // Essa linha é importante para segurança
+        public IActionResult EditarDetalhesLivro(Livro livroEditado)
         {
-            var livro = _db.Livros.FirstOrDefault(l => l.Id == Id);
+            if (!ModelState.IsValid) // Verifica se o modelo é válido
+            {
+                // Retorna à view com erros
+                return View("CarregarFormulario", livroEditado);
+            }
 
+            var livro = _db.Livros.FirstOrDefault(l => l.Id == livroEditado.Id);
             if (livro == null)
             {
                 return NotFound();
             }
 
+            // Atualiza as propriedades do livro
             livro.Titulo = livroEditado.Titulo;
             livro.Imagem = livroEditado.Imagem;
             livro.Autor = livroEditado.Autor;
             livro.NumeroPag = livroEditado.NumeroPag;
-            livro.Valor = livroEditado.Valor;
+            livro.ValorVenda = livroEditado.ValorVenda;
+            livro.ValorCompra = livroEditado.ValorCompra;
             livro.AnoLancamento = livroEditado.AnoLancamento;
             livro.QntdEstoque = livroEditado.QntdEstoque;
             livro.Descricao = livroEditado.Descricao;
 
+            // Salva as mudanças no banco de dados
             _db.SaveChanges();
 
-            return RedirectToAction("MostraDetalhesLivro", new { id = Id });
+            return RedirectToAction("MostraDetalhesLivro", new { id = livro.Id });
         }
 
         [HttpPost]

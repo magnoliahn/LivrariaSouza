@@ -149,7 +149,7 @@
 </head>
 <body>
 
-      <a href="@Url.Action("RetornaTodosLivros", "Home")" class="home-icon"><i class="fas fa-home"></i></a> 
+    <a href="@Url.Action("RetornaTodosLivros", "Home")" class="home-icon"><i class="fas fa-home"></i></a> 
     <h2>Editar Livro</h2>
 
     <form asp-action="EditarDetalhesLivro" asp-controller="DetalhesLivro" method="post">
@@ -158,45 +158,59 @@
         <div class="form-group">
             <label for="Titulo">Título</label>
             <input type="text" asp-for="Titulo" required />
+            <span asp-validation-for="Titulo" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label for="Autor">Autor</label>
             <input type="text" asp-for="Autor" required />
+            <span asp-validation-for="Autor" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label for="NumeroPag">Número de Páginas</label>
             <input type="number" asp-for="NumeroPag" required />
+            <span asp-validation-for="NumeroPag" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label for="Valor">Valor</label>
-            <input type="number" asp-for="Valor" step="0.01" required />
+            <label for="ValorVenda">Valor de venda</label>
+            <input type="number" asp-for="ValorVenda" step="0.01" required />
+            <span asp-validation-for="ValorVenda" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="ValorCompra">Valor de compra</label>
+            <input type="number" asp-for="ValorCompra" step="0.01" required />
+            <span asp-validation-for="ValorCompra" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label for="AnoLancamento">Ano de Lançamento</label>
             <input type="date" asp-for="AnoLancamento" required />
+            <span asp-validation-for="AnoLancamento" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label for="Descricao">Descrição</label>
-            <textarea asp-for="Descricao" required></textarea>
+            <input type="text" asp-for="Descricao" required />
+            <span asp-validation-for="Descricao" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label for="QntdEstoque">Quantidade em Estoque</label>
             <input type="number" asp-for="QntdEstoque" required />
+            <span asp-validation-for="QntdEstoque" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label for="Imagem">Imagem (URL)</label>
             <input type="text" asp-for="Imagem" required />
+            <span asp-validation-for="Imagem" class="text-danger"></span>
         </div>
 
         <div class="button-container">
-            <a href="@Url.Action("MostraDetalhesLivro", new { id = Model.Id })" class="cancel-btn">Cancelar</a>
+            <a href="@Url.Action("MostraDetalhesLivro", new { Id = Model.Id })" class="cancel-btn">Cancelar</a>
             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
         </div>
     </form>
