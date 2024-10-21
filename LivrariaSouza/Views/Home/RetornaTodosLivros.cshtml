@@ -99,24 +99,22 @@
                 background-color: #007bff;
             }
 
-        /* Estilo para os checkboxes */
         .book-checkbox {
             position: absolute;
             top: 10px;
             left: 10px;
-            display: none; /* Escondido por padrão */
-            width: 20px; /* Aumenta o tamanho do checkbox */
-            height: 20px; /* Aumenta o tamanho do checkbox */
+            display: none;
+            width: 20px;
+            height: 20px;
         }
 
         .card.selected .book-checkbox {
-            display: block; /* Mostra quando o card está selecionado */
+            display: block;
         }
 
-        /* Botão Selecionar Todos */
         .btn-select-all {
             padding: 10px 20px;
-            background-color: #007bff; /* Cor azul */
+            background-color: #007bff;
             color: white;
             border-radius: 5px;
             cursor: pointer;
@@ -128,50 +126,12 @@
                 background-color: #007bff;
             }
 
-        /* Adicionando estilo para o botão de excluir */
         #btn-excluir {
-            display: none;
-            margin-top: 10px; /* Espaço entre o botão de selecionar todos e o de excluir */
+            display: none; /* Este botão só aparecerá quando houver seleções */
+            margin-top: 10px; /* Espaçamento entre o botão "Excluir Selecionados" e os outros botões */
             background-color: #dc3545;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-            #btn-excluir:hover {
-                background-color: #007bff;
-            }
-
-        /* Container para os botões */
-        .button-container {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end; /* Alinha os botões à direita */
-            gap: 10px; /* Espaço entre os botões */
-        }
-
-        .btn-delete-one {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-        }
-
-            .btn-delete-one:hover {
-                background-color: #007bff;
-            }
-
-        #btn-excluir {
-            display: none;
-            background-color: #dc3545;
-            color: white;
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
@@ -181,6 +141,27 @@
                 background-color: #b21f2d;
             }
 
+        .button-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex; /* Alinha os botões lado a lado */
+            gap: 10px; /* Espaçamento entre os botões */
+        }
+
+        .btn-delete-one {
+            background-color: #007bff; /* Mudei para vermelho para "deletar" */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+            .btn-delete-one:hover {
+                background-color: #007bff; /* Cor de hover para "deletar" */
+            }
+
         .btn-add-livro {
             background-color: #007bff;
             color: white;
@@ -188,14 +169,11 @@
             border-radius: 5px;
             border: none;
             cursor: pointer;
-            margin-top: 10px;
         }
 
             .btn-add-livro:hover {
-                background-color: #007bff;
+                background-color: #0056b3;
             }
-
-
     </style>
 </head>
 <body>
@@ -227,8 +205,10 @@
 
     <div class="button-container">
         <button id="delete-one" class="btn-delete-one">Deletar livros</button>
+        <button id="btn-excluir" type="submit" style="display: none;">Excluir Selecionados</button>
         <a href="@Url.Action("CriarLivro", "Home")" class="btn btn-primary">Adicionar Livro</a>
     </div>
+
 
     <div class="row">
         @foreach (var livro in Model)
@@ -249,7 +229,7 @@
         }
     </div>
 
-
+@*     //javascript para os checkboxes *@
     <script>
         const checkboxes = document.querySelectorAll('.book-checkbox');
         const deleteOneButton = document.getElementById('delete-one');
