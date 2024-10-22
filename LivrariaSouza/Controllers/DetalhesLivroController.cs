@@ -12,6 +12,7 @@ namespace LivrariaSouza.Controllers
             _db = db;
         }
 
+        [Route("/admin/DetalhesLivro")]
         public IActionResult MostraDetalhesLivro(int id)
         {
             var livro = _db.Livros.FirstOrDefault(l => l.Id == id);
@@ -22,6 +23,7 @@ namespace LivrariaSouza.Controllers
             return View(livro);
         }
 
+        [Route("/admin/EditarLivro")]
         public IActionResult CarregarFormulario(int Id) // Carrega página para editar os detalhes do livro
         {
             var livro = _db.Livros.FirstOrDefault(l => l.Id == Id);
@@ -33,7 +35,8 @@ namespace LivrariaSouza.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken] // Essa linha é importante para segurança
+        [ValidateAntiForgeryToken]
+        [Route("/admin/EditarLivro")]
         public IActionResult EditarDetalhesLivro(Livro livroEditado)
         {
             if (!ModelState.IsValid) // Verifica se o modelo é válido
@@ -67,6 +70,7 @@ namespace LivrariaSouza.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("/admin/DeletarLivro")]
         public IActionResult DeletaLivro(int id)
         {
             var livro = _db.Livros.FirstOrDefault(l => l.Id == id);
