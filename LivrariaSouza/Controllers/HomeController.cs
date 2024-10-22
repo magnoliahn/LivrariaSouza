@@ -15,25 +15,27 @@ public class HomeController : Controller
     }
     public IActionResult Index()
     {
-        return RedirectToAction("RetornaTodosLivros");
+        return RedirectToAction("HomePageCliente", "HomeCliente");
     }
-
+    [Route("/admin/LivrariaSouza")]
     public IActionResult RetornaTodosLivros()
     {
         var livros = _db.Livros.ToList();
         return View(livros);
     }
 
+    [HttpGet]
+    [Route("/admin/CriarLivro")]
     public IActionResult CriarLivro()
     {
         return View();
     }
 
     [HttpPost]
+    [Route("/admin/CriarLivro")]
     public IActionResult CriarLivro(Livro livro)
     {
-        ModelState.Clear(); // Limpa erros automáticos
-
+        ModelState.Clear(); 
         // Valida se título tem no max 100 caracteres
         if (livro.Titulo.Length > 100)
         {
@@ -86,6 +88,7 @@ public class HomeController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Route("/admin/DeletarLivros")]
     public IActionResult DeletaLivrosEmBloco(int[] livroIds)
     {
         if (livroIds == null || livroIds.Length == 0)

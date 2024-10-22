@@ -5,10 +5,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<ValoresServices>(); // Serviço de valores
-builder.Services.AddControllersWithViews(); // Adiciona suporte a controladores e views
-
-// Configuração do banco de dados (por exemplo, usando SQL Server)
+builder.Services.AddScoped<ValoresServices>(); 
+builder.Services.AddControllersWithViews(); 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -22,19 +20,18 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles(); // Ativa arquivos estáticos
+app.UseStaticFiles(); 
 
-app.UseRouting(); // Ativa roteamento
+app.UseRouting(); 
 
-app.UseAuthorization(); // Ativa autorização
-
-// Define rotas de controlador
-app.MapControllerRoute(
-    name: "admin",
-    pattern: "admin/{controller=Home}/{action=RetornaTodosLivros}/{id?}");
+app.UseAuthorization(); 
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run(); // Inicia o aplicativo
+
+app.Run();
+
+
+
