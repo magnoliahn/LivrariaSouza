@@ -12,6 +12,7 @@ namespace LivrariaSouza.Controllers
         {
             _db = db;
         }
+
         [Route("/cliente/LivrariaSouza")]
         public IActionResult HomePageCliente()
         {

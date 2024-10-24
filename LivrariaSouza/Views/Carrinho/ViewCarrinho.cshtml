@@ -1,0 +1,115 @@
+﻿@model LivrariaSouza.Models.Models.CarrinhoDeCompras
+
+@{
+    ViewBag.Title = "Carrinho de Compras";
+}
+
+<!-- Estilo CSS -->
+<style>
+    body {
+        font-family: Arial, sans-serif; /* Fonte padrão */
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse; /* Para evitar espaços entre as células */
+    }
+
+        .table th, .table td {
+            border: 1px solid #ddd; /* Borda suave */
+            padding: 15px; /* Espaçamento interno */
+            text-align: center; /* Centraliza o texto */
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f9f9f9; /* Cor de fundo alternada */
+        }
+
+        .table tr:hover {
+            background-color: #f1f1f1; /* Destaque ao passar o mouse */
+        }
+
+    .btn {
+        padding: 10px 15px; /* Estilo dos botões */
+        border: none;
+        border-radius: 5px; /* Cantos arredondados */
+        cursor: pointer; /* Cursor de mão ao passar */
+        transition: background-color 0.3s; /* Efeito de transição */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Cor azul */
+        color: white;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Tom mais escuro ao passar o mouse */
+        }
+
+    .btn-danger {
+        background-color: #dc3545; /* Cor vermelha */
+        color: white;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333; /* Tom mais escuro ao passar o mouse */
+        }
+</style>
+
+<h2>Carrinho de Compras</h2>
+
+@if (Model.Itens.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Livro</th>
+                <th>Quantidade</th>
+                <th>Preço Unitário</th>
+                <th>Subtotal</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Itens)
+            {
+                <tr>
+                    <td style="text-align: center; padding: 10px;">
+                        <img src="@item.ImagemLivro" alt="@item.NomeLivro" style="width: 50px; height: auto; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);" /> <!-- Exibir imagem -->
+                        <br />
+                        <strong>@item.NomeLivro</strong> <!-- Exibir título -->
+                    </td>
+                    <td style="text-align: center;">
+                        <form asp-action="UpdateQuantidade" method="post">
+                            <input type="hidden" name="livroId" value="@item.IdItem" />
+                            <input type="number" name="qntdLivros" value="@item.QntdItem" min="1" style="width: 50px; text-align: center;" />
+                            <button type="submit" class="btn btn-primary" style="margin-left: 5px;">Atualizar</button>
+                        </form>
+                    </td>
+                    <td style="text-align: center;">@item.ValorItem.ToString("C")</td>
+                    <td style="text-align: center;">@((item.QntdItem * item.ValorItem).ToString("C"))</td> <!-- Subtotal formatado -->
+                    <td style="text-align: center;">
+                        <form asp-action="RemoveDoCarrinho" method="post">
+                            <input type="hidden" name="livroId" value="@item.IdItem" />
+                            <button type="submit" class="btn btn-danger">Remover</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3"><strong>Total:</strong></td>
+                <td>@Model.ValorTotal.ToString("C")</td> <!-- Usando a propriedade ValorTotal do modelo -->
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+}
+else
+{
+    <p>Seu carrinho está vazio.</p>
+}
+
+<!-- Botão para continuar comprando -->
+<a href="@Url.Action("LivrariaSouza", "cliente")" class="btn btn-primary">Continuar Comprando</a>
