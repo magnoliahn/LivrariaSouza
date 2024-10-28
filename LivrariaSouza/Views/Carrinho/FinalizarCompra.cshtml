@@ -1,0 +1,139 @@
+﻿@model LivrariaSouza.Models.Models.FinalizarCompra
+
+@{
+    ViewBag.Title = "Finalizar Compra";
+}
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif; /* Usando a fonte Roboto */
+        background: linear-gradient(to bottom right, #f0f8ff, #e6e6fa); /* Fundo com gradiente suave */
+        margin: 0;
+        padding: 20px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+        font-size: 2rem; /* Estilização igual à página anterior */
+        font-weight: bold; /* Estilização igual à página anterior */
+    }
+
+    form {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s;
+    }
+
+        form:hover {
+            transform: translateY(-2px); /* Efeito de levitação ao passar o mouse */
+        }
+
+    div {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #444;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para os campos de entrada */
+        transition: border-color 0.3s, box-shadow 0.3s; /* Efeito de transição suave */
+    }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5); /* Efeito de foco nos campos */
+        }
+
+    button {
+        width: 100%; /* Tornando o botão de confirmar compra mais largo */
+        padding: 8px; /* Ajustando a altura do botão */
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem; /* Tamanho da fonte */
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s; /* Efeito de transição suave */
+        margin-top: 10px; /* Espaçamento acima do botão */
+        background-color: #007bff; /* Cor do botão Confirmar */
+        color: #fff;
+    }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05); /* Efeito de aumento ao passar o mouse */
+        }
+
+    select {
+        appearance: none; /* Removendo a aparência padrão do select */
+        background-color: #fff; /* Fundo branco para o select */
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA0UlEQVR42mJ8//8/AwABhgF1SxQEqAAAAAElFTkSuQmCC'); /* Adicionando uma seta para o select */
+        background-repeat: no-repeat;
+        background-position: right 10px center; /* Posicionando a seta à direita */
+        padding-right: 30px; /* Espaçamento à direita para a seta */
+    }
+
+    .text-danger {
+        color: #dc3545; /* Estilo para mensagens de erro */
+    }
+</style>
+
+<h2>Finalizar Compra</h2>
+
+<form asp-action="FinalizarCompra" method="post">
+    <div>
+        <label>Nome:</label>
+        <input asp-for="Nome" />
+        <span asp-validation-for="Nome" class="text-danger"></span>
+    </div>
+    <div>
+        <label>Endereço:</label>
+        <input asp-for="Endereco" />
+        <span asp-validation-for="Endereco" class="text-danger"></span>
+    </div>
+    <div>
+        <label>CEP:</label>
+        <input asp-for="CEP" />
+        <span asp-validation-for="CEP" class="text-danger"></span>
+    </div>
+    <div>
+        <label>Forma de Pagamento:</label>
+        <select asp-for="FormaPagamento">
+            <option value="">Selecione</option>
+            <option value="Pix">Pix</option>
+            <option value="Boleto">Boleto</option>
+            <option value="Cartão de Crédito">Cartão de Crédito</option>
+        </select>
+        <span asp-validation-for="FormaPagamento" class="text-danger"></span>
+    </div>
+    <button type="submit">Confirmar Compra</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
