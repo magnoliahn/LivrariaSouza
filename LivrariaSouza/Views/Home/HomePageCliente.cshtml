@@ -6,7 +6,6 @@
     <title>Lista de Livros</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Configura o estilo geral da página e da fonte */
         body {
             background: linear-gradient(to bottom right, #f0f8ff, #e6e6fa);
             font-family: 'Roboto', sans-serif;
@@ -14,22 +13,12 @@
             padding: 0;
         }
 
-        /* Estilo do título principal */
         .titulo-livros {
             text-align: center;
             font-size: 2rem;
             font-weight: bold;
             margin: 40px 0 30px;
             color: #333;
-        }
-
-        /* Container para os botões no topo */
-        .button-container {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 10px;
         }
 
         .row {
@@ -44,12 +33,12 @@
 
         .col-md-2 {
             padding: 0;
-            flex: 0 0 calc(20% - 10px); /* Adapta para o mesmo tamanho da segunda view */
+            flex: 0 0 calc(25% - 20px);
             box-sizing: border-box;
         }
 
         .card {
-            height: 445px; /* Altura reduzida para manter a proporção */
+            height: 500px; /* Ajuste para garantir espaço suficiente */
             border: 1px solid #ddd;
             border-radius: 8px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -57,8 +46,6 @@
             transition: transform 0.3s;
             display: flex;
             flex-direction: column;
-            margin-bottom: 20px; /* Mantém o espaçamento */
-            position: relative;
         }
 
             .card:hover {
@@ -67,8 +54,9 @@
 
             .card img {
                 width: 100%;
-                height: 300px; 
-                object-fit: cover;
+                max-height: 300px;
+                object-fit: contain;
+                margin: auto;
             }
 
         .card-body {
@@ -77,7 +65,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: space-between; /* Para distribuir espaço */
         }
 
         .card-title {
@@ -98,41 +86,55 @@
             font-weight: bold;
         }
 
-
-        /* Botões com estilos distintos */
         .btn {
             display: inline-block;
-            text-align: center;
-            font-size: 0.9rem;
-            padding: 10px 20px;
+            padding: 8px 12px; /* Diminuído para botões menores */
             background-color: #007bff;
             color: #fff;
+            border-radius: 5px;
             text-decoration: none;
-            margin-top: 10px;
+            text-align: center;
+            margin: 5px 0; /* Ajuste para espaçamento entre os botões */
+            transition: background-color 0.3s;
+            font-size: 0.9rem; /* Tamanho da fonte reduzido */
         }
+
+            .btn:hover {
+                background-color: #0056b3;
+            }
 
         .btn-carrinho {
-            background-color: #007bff;
-            color: #fff;
+            background-color: #28a745;
         }
+
+            .btn-carrinho:hover {
+                background-color: #218838;
+            }
 
         .btn-adicionar {
-            background-color: #007bff;
+            background-color: #ffc107; /* Cor do botão de adicionar */
             color: #fff;
-            width: 100%;
-            padding: 10px;
-            margin-top: auto;
+            width: 100%; /* Largura total do card */
+            padding: 10px; /* Ajuste o padding se necessário */
         }
 
+            .btn-adicionar:hover {
+                background-color: #e0a800; /* Tom mais escuro ao passar o mouse */
+            }
+
+        .msg-alert {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #d9534f; /* Cor do alerta */
+            margin: 20px;
+        }
     </style>
 </head>
 <body>
-    <div class="button-container">
-        <a href="@Url.Action("RetornaTodosLivros", "Home")" class="btn">Sou Administrador</a>
-        <a href="@Url.Action("ViewCarrinho", "Carrinho")" class="btn btn-carrinho">Ver Carrinho</a>
-    </div>
-
     <h2 class="titulo-livros">Livraria Souza</h2>
+
+    <a href="@Url.Action("RetornaTodosLivros", "Home")" class="btn">Sou Administrador</a>
+    <a href="@Url.Action("ViewCarrinho", "Carrinho")" class="btn btn-carrinho">Ver Carrinho</a>
 
     <!-- Mensagem de alerta -->
     <div id="msgAlert" class="msg-alert" style="display:none;"></div>
@@ -152,7 +154,7 @@
                         <p class="card-value">@livro.ValorVenda.ToString("C")</p>
                         <form class="adicionar-livro-form" method="post" action="@Url.Action("AdicionarLivroAoCarrinho", "Carrinho")">
                             <input type="hidden" name="livroId" value="@livro.Id" />
-                            <input type="hidden" name="qntdLivros" value="1" />
+                            <input type="hidden" name="qntdLivros" value="1" /> <!-- quantidade padrão -->
                             <input type="hidden" name="valorLivro" value="@livro.ValorVenda" />
                             <button type="button" class="btn btn-adicionar adicionar-livro-btn">Adicionar ao Carrinho</button>
                         </form>
@@ -172,25 +174,26 @@
                     method: 'POST',
                     body: formData
                 })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.text();
-                        }
-                        throw new Error('Erro ao adicionar o livro ao carrinho.');
-                    })
-                    .then(message => {
-                        const msgAlert = document.getElementById('msgAlert');
-                        msgAlert.innerText = "Livro adicionado ao carrinho com sucesso!";
-                        msgAlert.style.display = "block";
-                        setTimeout(() => {
-                            msgAlert.style.display = "none";
-                        }, 3000);
-                    })
-                    .catch(error => {
-                        const msgAlert = document.getElementById('msgAlert');
-                        msgAlert.innerText = error.message;
-                        msgAlert.style.display = "block";
-                    });
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    }
+                    throw new Error('Erro ao adicionar o livro ao carrinho.');
+                })
+                .then(message => {
+                    // Exibe a mensagem de sucesso
+                    const msgAlert = document.getElementById('msgAlert');
+                    msgAlert.innerText = "Livro adicionado ao carrinho com sucesso!";
+                    msgAlert.style.display = "block";
+                    setTimeout(() => {
+                        msgAlert.style.display = "none"; // Oculta a mensagem após 3 segundos
+                    }, 3000);
+                })
+                .catch(error => {
+                    const msgAlert = document.getElementById('msgAlert');
+                    msgAlert.innerText = error.message;
+                    msgAlert.style.display = "block";
+                });
             });
         });
     </script>
