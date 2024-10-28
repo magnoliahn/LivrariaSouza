@@ -77,5 +77,26 @@ namespace LivrariaSouza.Controllers
 
             return RedirectToAction("ViewCarrinho");
         }
+
+        [HttpGet] 
+        public IActionResult FinalizarCompra()
+        {
+            return View();
+        }
+
+        // Processa a finalização da compra
+        [HttpPost]
+        public IActionResult FinalizarCompra(FinalizarCompra model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            HttpContext.Session.Remove("Carrinho");
+
+            TempData["Mensagem"] = "Compra finalizada com sucesso!";
+            return RedirectToAction("ViewCarrinho"); 
+        }
+
     }
 }
