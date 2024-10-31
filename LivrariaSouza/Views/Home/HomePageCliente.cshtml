@@ -36,17 +36,18 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 10px; /* Diminua o gap para 10px */
             margin: 0 auto;
             padding: 0;
-            max-width: 1200px;
+            max-width: 100%;
         }
 
         .col-md-2 {
             padding: 0;
-            flex: 0 0 calc(20% - 10px); /* Adapta para o mesmo tamanho da segunda view */
+            flex: 0 0 calc(19% - 8px); /* Ajuste para 19% para caber 5 livros */
             box-sizing: border-box;
         }
+
 
         .card {
             height: 445px; /* Altura reduzida para manter a proporção */
@@ -149,7 +150,7 @@
                         <h5 class="card-title">
                             <a href="@Url.Action("MostraDetalhesLivroCliente", "HomeCliente", new { id = livro.Id })">@livro.Titulo</a>
                         </h5>
-                        <p class="card-value">@livro.ValorVenda.ToString("C")</p>
+                        <p class="card-value">@livro.ValorVenda.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</p>
                         <form class="adicionar-livro-form" method="post" action="@Url.Action("AdicionarLivroAoCarrinho", "Carrinho")">
                             <input type="hidden" name="livroId" value="@livro.Id" />
                             <input type="hidden" name="qntdLivros" value="1" />

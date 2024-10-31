@@ -182,8 +182,10 @@
     <!-- Alerta de Mensagem -->
     @if (TempData["MensagemLivroAdicionado"] != null)
     {
+        string mensagem = TempData["MensagemLivroAdicionado"]?.ToString();
+        TempData["MensagemLivroAdicionado"] = null; // Limpa após uso
         <div class="alert alert-@TempData["TipoMensagem"] alert-dismissible fade show" role="alert">
-            @TempData["MensagemLivroAdicionado"]
+            @mensagem
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
