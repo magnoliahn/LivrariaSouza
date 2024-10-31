@@ -86,7 +86,7 @@ namespace LivrariaSouza.Controllers
             TempData["MensagemLivroDeletado"] = "Livro deletado com sucesso!";
             TempData["TipoMensagem"] = "success"; // Alerta de sucesso
 
-            return RedirectToAction("RetornaTodosLivros", "Home"); // Redireciona para a página principal ou outra de sua escolha
+            return RedirectToAction("RetornaTodosLivros", "Home"); 
         }
     }
 }
