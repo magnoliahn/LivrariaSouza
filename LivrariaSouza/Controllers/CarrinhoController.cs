@@ -18,8 +18,6 @@ namespace LivrariaSouza.Controllers
             // Inicializa o carrinho sempre que a view é chamada
             var carrinho = HttpContext.Session.GetObjectFromJson<CarrinhoDeCompras>("Carrinho") ?? new CarrinhoDeCompras();
 
-            ViewData["Carrinho"] = carrinho; // Adiciona o carrinho no ViewData
-
             // Retorna a view com o carrinho
             return View(carrinho); // Aqui, estamos passando o carrinho como Model para a view
         }
@@ -46,9 +44,7 @@ namespace LivrariaSouza.Controllers
             // Salva o carrinho atualizado na sessão
             HttpContext.Session.SetObjectAsJson("Carrinho", carrinho);
 
-            TempData["MensagemLivroAdicionado"] = "Livro adicionado ao carrinho com sucesso!";
-
-            return RedirectToAction("ViewCarrinho");
+            return Ok("Livro adicionado ao carrinho com sucesso!");
         }
 
         // Remove um item do carrinho

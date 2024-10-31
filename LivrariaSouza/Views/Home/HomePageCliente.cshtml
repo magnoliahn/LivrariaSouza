@@ -174,26 +174,30 @@
                     method: 'POST',
                     body: formData
                 })
-                .then(response => {
-                    if (response.ok) {
-                        return response.text();
-                    }
-                    throw new Error('Erro ao adicionar o livro ao carrinho.');
-                })
-                .then(message => {
-                    // Exibe a mensagem de sucesso
-                    const msgAlert = document.getElementById('msgAlert');
-                    msgAlert.innerText = "Livro adicionado ao carrinho com sucesso!";
-                    msgAlert.style.display = "block";
-                    setTimeout(() => {
-                        msgAlert.style.display = "none"; // Oculta a mensagem após 3 segundos
-                    }, 3000);
-                })
-                .catch(error => {
-                    const msgAlert = document.getElementById('msgAlert');
-                    msgAlert.innerText = error.message;
-                    msgAlert.style.display = "block";
-                });
+                    .then(response => {
+                        if (response.ok) {
+                            return response.text();  // Retorna a mensagem de sucesso como texto
+                        }
+                        return response.text().then(errorMessage => {  // Lê o corpo do erro
+                            throw new Error(errorMessage);  // Lança erro com mensagem personalizada
+                        });
+                    })
+                    .then(message => {
+                        const msgAlert = document.getElementById('msgAlert');
+                        msgAlert.innerText = message;
+                        msgAlert.style.display = "block";
+                        setTimeout(() => {
+                            msgAlert.style.display = "none";
+                        }, 3000);
+                    })
+                    .catch(error => {
+                        const msgAlert = document.getElementById('msgAlert');
+                        msgAlert.innerText = error.message;
+                        msgAlert.style.display = "block";
+                        setTimeout(() => {
+                            msgAlert.style.display = "none";
+                        }, 3000);
+                    });
             });
         });
     </script>
