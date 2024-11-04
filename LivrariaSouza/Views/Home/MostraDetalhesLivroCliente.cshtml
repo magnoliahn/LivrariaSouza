@@ -153,19 +153,19 @@
                 @if (Model.QntdEstoque > 0)
                 {
                     <p><strong>Quantidade em Estoque:</strong> @Model.QntdEstoque</p>
+
+                    <!-- Botão para adicionar ao carrinho -->
+                    <form id="adicionarCarrinhoForm" method="post">
+                        <input type="hidden" name="livroId" value="@Model.Id" />
+                        <input type="hidden" name="qntdLivros" value="1" />
+                        <input type="hidden" name="valorLivro" value="@Model.ValorVenda" />
+                        <button type="button" class="btn-adicionar" id="btnAdicionarCarrinho">Adicionar ao Carrinho</button>
+                    </form>
                 }
                 else
                 {
                     <p><strong>Quantidade em Estoque:</strong> Esgotado</p>
                 }
-
-                <!-- Formulário para adicionar ao carrinho -->
-                <form id="adicionarCarrinhoForm" method="post">
-                    <input type="hidden" name="livroId" value="@Model.Id" />
-                    <input type="hidden" name="qntdLivros" value="1" /> <!-- quantidade padrão -->
-                    <input type="hidden" name="valorLivro" value="@Model.ValorVenda" />
-                    <button type="button" class="btn-adicionar" id="btnAdicionarCarrinho">Adicionar ao Carrinho</button>
-                </form>
 
                 <!-- Mensagem de alerta -->
                 <div class="msg-alert" id="mensagemSucesso" style="display:none;"></div>
@@ -174,18 +174,18 @@
     </div>
 
     <script>
-        $(document).ready(function() {
-            $("#btnAdicionarCarrinho").click(function() {
+        $(document).ready(function () {
+            $("#btnAdicionarCarrinho").click(function () {
                 var form = $("#adicionarCarrinhoForm");
                 $.ajax({
                     type: form.attr('method'),
                     url: '@Url.Action("AdicionarLivroAoCarrinho", "Carrinho")',
                     data: form.serialize(),
-                    success: function(response) {
+                    success: function (response) {
                         // Exibir mensagem de sucesso
                         $("#mensagemSucesso").text("Livro adicionado ao carrinho com sucesso!").show();
                     },
-                    error: function() {
+                    error: function () {
                         // Exibir mensagem de erro, se necessário
                         $("#mensagemSucesso").text("Ocorreu um erro ao adicionar o livro ao carrinho.").show();
                     }
