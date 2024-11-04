@@ -14,6 +14,15 @@
             padding: 0;
         }
 
+        .home-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
         /* Estilo do título principal */
         .titulo-livros {
             text-align: center;
@@ -50,7 +59,7 @@
 
 
         .card {
-            height: 445px; /* Altura reduzida para manter a proporção */
+            height: 500px; /* Altura reduzida para manter a proporção */
             border: 1px solid #ddd;
             border-radius: 8px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -95,8 +104,15 @@
 
         .card-value {
             font-size: 1rem;
-            color: #28a745;
+            color: #444; /* Mesma cor do título */
             font-weight: bold;
+        }
+
+        .card-price {
+            font-size: 1rem;
+            color: #28a745; /* Verde para o preço de venda */
+            font-weight: bold;
+            margin-top: 5px;
         }
 
 
@@ -133,6 +149,7 @@
     </div>
 
     <h2 class="titulo-livros">Livraria Souza</h2>
+    <a href="@Url.Action("HomePageCliente", "HomeCliente")" class="home-icon"><i class="fas fa-home"></i></a>
 
     <!-- Mensagem de alerta -->
     <div id="msgAlert" class="msg-alert" style="display:none;"></div>
@@ -149,13 +166,21 @@
                         <h5 class="card-title">
                             <a href="@Url.Action("MostraDetalhesLivroCliente", "HomeCliente", new { id = livro.Id })">@livro.Titulo</a>
                         </h5>
-                        <p class="card-value">@livro.ValorVenda.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</p>
-                        <form class="adicionar-livro-form" method="post" action="@Url.Action("AdicionarLivroAoCarrinho", "Carrinho")">
-                            <input type="hidden" name="livroId" value="@livro.Id" />
-                            <input type="hidden" name="qntdLivros" value="1" />
-                            <input type="hidden" name="valorLivro" value="@livro.ValorVenda" />
-                            <button type="button" class="btn btn-adicionar adicionar-livro-btn">Adicionar ao Carrinho</button>
-                        </form>
+                        <p class="card-value">Estoque: @(livro.QntdEstoque == 0 ? "Esgotado" : livro.QntdEstoque.ToString()) </p>
+                        <p class="card-price">@livro.ValorVenda.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</p>
+                        @if (livro.QntdEstoque > 0)
+                        {
+                            <form class="adicionar-livro-form" method="post" action="@Url.Action("AdicionarLivroAoCarrinho", "Carrinho")">
+                                <input type="hidden" name="livroId" value="@livro.Id" />
+                                <input type="hidden" name="qntdLivros" value="1" />
+                                <input type="hidden" name="valorLivro" value="@livro.ValorVenda" />
+                                <button type="button" class="btn btn-adicionar adicionar-livro-btn">Adicionar ao Carrinho</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <p class="btn-esgotado">Esgotado</p>
+                        }
                     </div>
                 </div>
             </div>
