@@ -24,7 +24,7 @@ namespace LivrariaSouza.Controllers
         }
 
         [Route("/admin/EditarLivro")]
-        public IActionResult CarregarFormulario(int Id) // Carrega página para editar os detalhes do livro
+        public IActionResult CarregarFormulario(int Id)
         {
             var livro = _db.Livros.FirstOrDefault(l => l.Id == Id);
             if (livro == null)
@@ -39,9 +39,8 @@ namespace LivrariaSouza.Controllers
         [Route("/admin/EditarLivro")]
         public IActionResult EditarDetalhesLivro(Livro livroEditado)
         {
-            if (!ModelState.IsValid) // Verifica se o modelo é válido
+            if (!ModelState.IsValid)
             {
-                // Retorna à view com erros
                 return View("CarregarFormulario", livroEditado);
             }
 
@@ -51,7 +50,6 @@ namespace LivrariaSouza.Controllers
                 return View("NotFound");
             }
 
-            // Atualiza as propriedades do livro
             livro.Titulo = livroEditado.Titulo;
             livro.Imagem = livroEditado.Imagem;
             livro.Autor = livroEditado.Autor;
@@ -62,7 +60,6 @@ namespace LivrariaSouza.Controllers
             livro.QntdEstoque = livroEditado.QntdEstoque;
             livro.Descricao = livroEditado.Descricao;
 
-            // Salva as mudanças no banco de dados
             _db.SaveChanges();
 
             return RedirectToAction("MostraDetalhesLivro", new { id = livro.Id });
@@ -84,7 +81,7 @@ namespace LivrariaSouza.Controllers
             _db.SaveChanges();
 
             TempData["MensagemLivroDeletado"] = "Livro deletado com sucesso!";
-            TempData["TipoMensagem"] = "success"; // Alerta de sucesso
+            TempData["TipoMensagem"] = "success";
 
             return RedirectToAction("RetornaTodosLivros", "Home");
         }

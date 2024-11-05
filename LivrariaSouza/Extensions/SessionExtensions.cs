@@ -5,8 +5,8 @@ public static class SessionExtensions
     // Salva um objeto na sessão como JSON
     public static void SetObjectAsJson(this ISession session, string key, object value)
     {
-        var jsonData = JsonSerializer.Serialize(value); // Converte para JSON
-        session.SetString(key, jsonData); // Armazena como string na sessão
+        var jsonData = JsonSerializer.Serialize(value);
+        session.SetString(key, jsonData);
     }
 
     // Recupera um objeto da sessão a partir de JSON
