@@ -18,7 +18,7 @@ namespace LivrariaSouza.Controllers
             var livro = _db.Livros.FirstOrDefault(l => l.Id == id);
             if (livro == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
             return View(livro);
         }
@@ -29,7 +29,7 @@ namespace LivrariaSouza.Controllers
             var livro = _db.Livros.FirstOrDefault(l => l.Id == Id);
             if (livro == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
             return View(livro);
         }
@@ -48,7 +48,7 @@ namespace LivrariaSouza.Controllers
             var livro = _db.Livros.FirstOrDefault(l => l.Id == livroEditado.Id);
             if (livro == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             // Atualiza as propriedades do livro
@@ -77,7 +77,7 @@ namespace LivrariaSouza.Controllers
 
             if (livro == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             _db.Livros.Remove(livro);
@@ -86,7 +86,7 @@ namespace LivrariaSouza.Controllers
             TempData["MensagemLivroDeletado"] = "Livro deletado com sucesso!";
             TempData["TipoMensagem"] = "success"; // Alerta de sucesso
 
-            return RedirectToAction("RetornaTodosLivros", "Home"); 
+            return RedirectToAction("RetornaTodosLivros", "Home");
         }
     }
 }

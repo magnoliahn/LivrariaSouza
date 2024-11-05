@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Página Não Encontrada";
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+    <div class="container text-center mt-5">
+        <h1>Oops!</h1>
+        <h2>Página Não Encontrada (404)</h2>
+        <p>Desculpe, mas a página que você está procurando não existe.</p>
+        <a href="@Url.Action("HomePageCliente", "HomeCliente")" class="btn btn-primary">Voltar à Página Inicial</a>
+    </div>
+</body>
+</html>

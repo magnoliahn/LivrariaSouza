@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<ValoresServices>(); 
-builder.Services.AddControllersWithViews(); 
+builder.Services.AddScoped<ValoresServices>();
+builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -31,19 +31,18 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts(); // HSTS
 }
 
+// Configuração para redirecionar erros 404 para a ação HomePageCliente
+app.UseStatusCodePagesWithReExecute("/Home/Error404");
+
 app.UseHttpsRedirection();
-app.UseStaticFiles(); 
+app.UseStaticFiles();
 
-app.UseRouting(); 
+app.UseRouting();
 
-app.UseAuthorization(); 
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-
 app.Run();
-
-
-

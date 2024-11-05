@@ -5,12 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Livros</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             background: linear-gradient(to bottom right, #f0f8ff, #e6e6fa);
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
+        }
+
+        .home-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: #007bff;
+            text-decoration: none;
         }
 
         .titulo-livros {
@@ -43,7 +53,7 @@
 
         .card {
             flex: 0 0 calc(20% - 10px);
-            height: 405px;
+            height: 425px;
             border: 1px solid #ddd;
             border-radius: 8px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -82,9 +92,18 @@
 
         .card-value {
             font-size: 1rem;
-            color: #28a745;
+            color: #444; /* Mesma cor do título */
             font-weight: bold;
         }
+
+        .card-price {
+            font-size: 1rem;
+            color: #28a745; /* Verde para o preço de venda */
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+
 
         .btn-primary {
             padding: 10px 20px;
@@ -177,15 +196,14 @@
     </style>
 </head>
 <body>
+    <a href="@Url.Action("RetornaTodosLivros", "Home")" class="home-icon"><i class="fas fa-home"></i></a>
     <h2 class="titulo-livros">Livraria Souza</h2>
 
     <!-- Alerta de Mensagem -->
     @if (TempData["MensagemLivroAdicionado"] != null)
     {
-        string mensagem = TempData["MensagemLivroAdicionado"]?.ToString();
-        TempData["MensagemLivroAdicionado"] = null; // Limpa após uso
         <div class="alert alert-@TempData["TipoMensagem"] alert-dismissible fade show" role="alert">
-            @mensagem
+            @TempData["MensagemLivroAdicionado"]
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
@@ -200,25 +218,22 @@
 
     <form id="form-excluir-livros" asp-action="DeletaLivrosEmBloco" method="post">
         @Html.AntiForgeryToken()
-        <input type="hidden" name="livroIds" id="livroIds" />
+        <div id="livroIdsContainer"></div> <!-- Contêiner para armazenar os inputs hidden -->
         <button id="btn-excluir" type="submit" style="display: none;">Excluir Selecionados</button>
     </form>
 
-
     <div class="button-container">
         <button id="delete-one" class="btn-delete-one">Deletar livros</button>
-        <button id="btn-excluir" type="submit" style="display: none;">Excluir Selecionados</button>
         <a href="@Url.Action("CriarLivro", "Home")" class="btn btn-primary">Adicionar Livro</a>
-        <a href="@Url.Action("HomePageCliente", "HomeCliente")" class="btn btn-primary">Página Cliente</a> 
+        <a href="@Url.Action("HomePageCliente", "HomeCliente")" class="btn btn-primary">Página Cliente</a>
     </div>
-
 
     <div class="row">
         @foreach (var livro in Model)
         {
             <div class="col-md-2">
                 <div class="card mb-4">
-                    <input type="checkbox" class="book-checkbox" name="livroIds" value="@livro.Id" style="display: none;" />
+                    <input type="checkbox" class="book-checkbox" value="@livro.Id" style="display: none;" />
                     <a href="@Url.Action("MostraDetalhesLivro", "DetalhesLivro", new { id = livro.Id })">
                         <img src="@livro.Imagem" class="card-img-top" alt="@livro.Titulo" />
                     </a>
@@ -226,19 +241,25 @@
                         <h5 class="card-title">
                             <a href="@Url.Action("MostraDetalhesLivro", "DetalhesLivro", new { id = livro.Id })">@livro.Titulo</a>
                         </h5>
+                        <p class="card-value">
+                            Estoque: @(livro.QntdEstoque == 0 ? "Esgotado" : livro.QntdEstoque.ToString())
+                        </p>
+                        <p class="card-price">R$ @livro.ValorVenda</p>
                     </div>
                 </div>
             </div>
         }
     </div>
 
-@*     //javascript para os checkboxes *@
+
     <script>
         const checkboxes = document.querySelectorAll('.book-checkbox');
         const deleteOneButton = document.getElementById('delete-one');
         const deleteButton = document.getElementById('btn-excluir');
+        const livroIdsContainer = document.getElementById('livroIdsContainer');
         let checkboxesVisible = false;
 
+        // Exibir/ocultar checkboxes
         deleteOneButton.addEventListener('click', function () {
             checkboxesVisible = !checkboxesVisible;
             checkboxes.forEach(checkbox => {
@@ -246,19 +267,29 @@
             });
         });
 
+        // Atualizar o formulário com livros selecionados
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function () {
-                toggleDeleteButton();
+                updateSelectedLivros();
             });
         });
 
-        function toggleDeleteButton() {
+        function updateSelectedLivros() {
+            livroIdsContainer.innerHTML = ''; // Limpa o contêiner de inputs hidden
+
             const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
             deleteButton.style.display = anyChecked ? 'block' : 'none';
-            document.getElementById('livroIds').value = Array.from(checkboxes)
-                .filter(checkbox => checkbox.checked)
-                .map(checkbox => checkbox.value)
-                .join(',');
+
+            // Adiciona um input hidden para cada livro selecionado
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'livroIds';
+                    input.value = checkbox.value;
+                    livroIdsContainer.appendChild(input);
+                }
+            });
         }
     </script>
 </body>

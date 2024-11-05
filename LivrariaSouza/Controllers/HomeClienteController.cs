@@ -1,5 +1,4 @@
 ﻿using LivrariaSouza.DataAccess;
-using LivrariaSouza.DataAccess.Repository.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LivrariaSouza.Controllers
@@ -26,7 +25,7 @@ namespace LivrariaSouza.Controllers
             var livro = _db.Livros.Find(id);
             if (livro == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
             return View("~/Views/Home/MostraDetalhesLivroCliente.cshtml", livro);
         }

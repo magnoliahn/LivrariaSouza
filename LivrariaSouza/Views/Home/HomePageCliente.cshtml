@@ -1,11 +1,14 @@
-﻿<!DOCTYPE html>
+﻿﻿
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Livros</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* Configura o estilo geral da página e da fonte */
         body {
             background: linear-gradient(to bottom right, #f0f8ff, #e6e6fa);
             font-family: 'Roboto', sans-serif;
@@ -13,12 +16,31 @@
             padding: 0;
         }
 
+        .home-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        /* Estilo do título principal */
         .titulo-livros {
             text-align: center;
             font-size: 2rem;
             font-weight: bold;
             margin: 40px 0 30px;
             color: #333;
+        }
+
+        /* Container para os botões no topo */
+        .button-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
         }
 
         .row {
@@ -37,8 +59,9 @@
             box-sizing: border-box;
         }
 
+
         .card {
-            height: 500px; /* Ajuste para garantir espaço suficiente */
+            height: 500px; /* Altura reduzida para manter a proporção */
             border: 1px solid #ddd;
             border-radius: 8px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -46,6 +69,8 @@
             transition: transform 0.3s;
             display: flex;
             flex-direction: column;
+            margin-bottom: 20px; /* Mantém o espaçamento */
+            position: relative;
         }
 
             .card:hover {
@@ -54,13 +79,12 @@
 
             .card img {
                 width: 100%;
-                max-height: 300px;
-                object-fit: contain;
-                margin: auto;
+                height: 300px;
+                object-fit: cover;
             }
 
         .card-body {
-            padding: 8px; /* Reduz o padding do card */
+            padding: 10px;
             text-align: center;
             flex: 1;
             display: flex;
@@ -69,9 +93,9 @@
         }
 
         .card-title {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: bold;
-            margin: 6px 0; /* Margem reduzida */
+            margin: 10px 0;
             color: #444;
         }
 
@@ -81,75 +105,53 @@
             }
 
         .card-value {
-            font-size: 0.95rem;
-            color: #28a745;
+            font-size: 1rem;
+            color: #444; /* Mesma cor do título */
             font-weight: bold;
-            margin: 4px 0; /* Margem reduzida */
         }
 
+        .card-price {
+            font-size: 1rem;
+            color: #28a745; /* Verde para o preço de venda */
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+
+        /* Botões com estilos distintos */
         .btn {
             display: inline-block;
-            padding: 8px 12px; /* Diminuído para botões menores */
+            text-align: center;
+            font-size: 0.9rem;
+            padding: 10px 20px;
             background-color: #007bff;
             color: #fff;
-            border-radius: 5px;
             text-decoration: none;
-            text-align: center;
-            margin: 5px 0; /* Ajuste para espaçamento entre os botões */
-            transition: background-color 0.3s;
-            font-size: 0.9rem; /* Tamanho da fonte reduzido */
-        }
-
-            .btn:hover {
-                background-color: #0056b3;
-            }
-
-        .btn-carrinho {
-            background-color: #28a745;
-        }
-
-            .btn-carrinho:hover {
-                background-color: #218838;
-            }
-
-        .btn-adicionar {
-            background-color: #ffc107;
-            color: #fff;
-            width: 100%;
-            padding: 8px; /* Reduz o padding do botão */
-            font-size: 0.9rem;
-            margin-top: 6px; /* Margem superior reduzida */
-        }
-
-            .btn-adicionar:hover {
-                background-color: #e0a800; /* Tom mais escuro ao passar o mouse */
-            }
-
-        .msg-alert {
-            text-align: center;
-            font-size: 1.1rem;
-            color: #d9534f; /* Cor do alerta */
-            margin: 20px;
-        }
-
-        .msg-esgotado {
-            color: #d9534f;
-            font-size: 1rem;
-            font-weight: bold;
             margin-top: 10px;
         }
 
-        .card-estoque {
-            font-size: 0.9rem;
-            color: #555;
-            margin: 4px 0; /* Margem reduzida */
+        .btn-carrinho {
+            background-color: #007bff;
+            color: #fff;
         }
+
+        .btn-adicionar {
+            background-color: #007bff;
+            color: #fff;
+            width: 100%;
+            padding: 10px;
+            margin-top: auto;
+        }
+
     </style>
 </head>
 <body>
-    <h2 class="titulo-livros">Livraria Souza</h2>
+    <div class="button-container">
+        <a href="@Url.Action("ViewCarrinho", "Carrinho")" class="btn btn-carrinho">Ver Carrinho</a>
+    </div>
 
-    <a href="@Url.Action("ViewCarrinho", "Carrinho")" class="btn btn-carrinho">Ver Carrinho</a>
+    <h2 class="titulo-livros">Livraria Souza</h2>
+    <a href="@Url.Action("HomePageCliente", "HomeCliente")" class="home-icon"><i class="fas fa-home"></i></a>
 
     <!-- Mensagem de alerta -->
     <div id="msgAlert" class="msg-alert" style="display:none;"></div>
@@ -166,22 +168,20 @@
                         <h5 class="card-title">
                             <a href="@Url.Action("MostraDetalhesLivroCliente", "HomeCliente", new { id = livro.Id })">@livro.Titulo</a>
                         </h5>
-                        <p class="card-value">@livro.ValorVenda.ToString("C")</p>
-                        
-                        <p class="card-estoque">Em estoque: @livro.QntdEstoque</p>
-
+                        <p class="card-value">Estoque: @(livro.QntdEstoque == 0 ? "Esgotado" : livro.QntdEstoque.ToString()) </p>
+                        <p class="card-price">@livro.ValorVenda.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</p>
                         @if (livro.QntdEstoque > 0)
                         {
                             <form class="adicionar-livro-form" method="post" action="@Url.Action("AdicionarLivroAoCarrinho", "Carrinho")">
                                 <input type="hidden" name="livroId" value="@livro.Id" />
-                                <input type="hidden" name="qntdLivros" value="1" /> <!-- quantidade padrão -->
+                                <input type="hidden" name="qntdLivros" value="1" />
                                 <input type="hidden" name="valorLivro" value="@livro.ValorVenda" />
                                 <button type="button" class="btn btn-adicionar adicionar-livro-btn">Adicionar ao Carrinho</button>
                             </form>
                         }
                         else
                         {
-                            <p class="msg-esgotado">Livro esgotado</p>
+                            <p class="btn-esgotado">Esgotado</p>
                         }
                     </div>
                 </div>
@@ -206,12 +206,11 @@
                         throw new Error('Erro ao adicionar o livro ao carrinho.');
                     })
                     .then(message => {
-                        // Exibe a mensagem de sucesso
                         const msgAlert = document.getElementById('msgAlert');
                         msgAlert.innerText = "Livro adicionado ao carrinho com sucesso!";
                         msgAlert.style.display = "block";
                         setTimeout(() => {
-                            msgAlert.style.display = "none"; // Oculta a mensagem após 3 segundos
+                            msgAlert.style.display = "none";
                         }, 3000);
                     })
                     .catch(error => {

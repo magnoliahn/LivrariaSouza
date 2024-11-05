@@ -74,7 +74,7 @@ namespace LivrariaSouza.Controllers
             return RedirectToAction("ViewCarrinho");
         }
 
-        [HttpGet] 
+        [HttpGet]
         public IActionResult FinalizarCompra()
         {
             return View();
@@ -91,7 +91,7 @@ namespace LivrariaSouza.Controllers
             HttpContext.Session.Remove("Carrinho");
 
             TempData["Mensagem"] = "Compra finalizada com sucesso!";
-            return RedirectToAction("ViewCarrinho"); 
+            return RedirectToAction("ViewCarrinho");
         }
 
     }
