@@ -35,11 +35,11 @@ public class HomeController : Controller
     [Route("/admin/CriarLivro")]
     public IActionResult CriarLivro(Livro livro)
     {
-        ModelState.Clear(); 
+        ModelState.Clear();
         // Valida se título tem no max 100 caracteres
         if (livro.Titulo.Length > 100)
         {
-            ModelState.AddModelError("Titulo","O Titulo do livro não pode conter mais de 100 caracteres.");
+            ModelState.AddModelError("Titulo", "O Titulo do livro não pode conter mais de 100 caracteres.");
         }
 
         var valorVenda = _valoresServices.ValidarCaracteres(livro.ValorVendaString);
@@ -49,7 +49,7 @@ public class HomeController : Controller
         {
             ModelState.AddModelError("ValorVendaString", stringValorVenda);
         }
-        else if(valorVenda is decimal decimalValorVenda)
+        else if (valorVenda is decimal decimalValorVenda)
         {
             livro.ValorVenda = decimalValorVenda;
         }
@@ -73,7 +73,7 @@ public class HomeController : Controller
             ViewData["TipoMensagem"] = "danger"; // Usando 'danger' para um alerta vermelho
             return View(livro);
         }
-        
+
         if (ModelState.IsValid)
         {
             _db.Livros.Add(livro);
@@ -114,4 +114,11 @@ public class HomeController : Controller
 
         return RedirectToAction("RetornaTodosLivros"); // Redireciona para a lista de livros
     }
+
+    public IActionResult Error404()
+    {
+        Response.StatusCode = 404; // Define o código de status para 404
+        return View("HomePageCliente"); // Retorna a view que você deseja exibir
+    }
+
 }

@@ -149,7 +149,7 @@
 </head>
 <body>
 
-    <a href="@Url.Action("RetornaTodosLivros", "Home")" class="home-icon"><i class="fas fa-home"></i></a> 
+    <a href="@Url.Action("RetornaTodosLivros", "Home")" class="home-icon"><i class="fas fa-home"></i></a>
     <h2>Editar Livro</h2>
 
     <form asp-action="EditarDetalhesLivro" asp-controller="DetalhesLivro" method="post">
@@ -214,5 +214,11 @@
             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
         </div>
     </form>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const dataAtual = new Date().toISOString().split("T")[0];
+            document.querySelector('input[type="date"][asp-for="AnoLancamento"]').setAttribute('max', dataAtual);
+        });
+    </script>
 </body>
 </html>
