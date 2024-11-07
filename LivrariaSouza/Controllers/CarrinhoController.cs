@@ -15,33 +15,26 @@ namespace LivrariaSouza.Controllers
         // Exibe o carrinho
         public IActionResult ViewCarrinho()
         {
-            // Inicializa o carrinho sempre que a view é chamada
             var carrinho = HttpContext.Session.GetObjectFromJson<CarrinhoDeCompras>("Carrinho") ?? new CarrinhoDeCompras();
 
-            // Retorna a view com o carrinho
-            return View(carrinho); // Aqui, estamos passando o carrinho como Model para a view
+            return View(carrinho);
         }
 
         // Adiciona um item ao carrinho
         public IActionResult AdicionarLivroAoCarrinho(int livroId, int qntdLivros, decimal valorLivro)
         {
-            // Recupera o livro do banco de dados
             var livro = _db.Livros.FirstOrDefault(l => l.Id == livroId);
 
-            // Verifica se o livro foi encontrado
             if (livro == null)
             {
                 TempData["Mensagem"] = "Livro não encontrado.";
-                return RedirectToAction("ViewCarrinho"); // Ou redirecione para onde você desejar
+                return RedirectToAction("ViewCarrinho");
             }
 
-            // Recupera o carrinho da sessão ou cria um novo se não existir
             var carrinho = HttpContext.Session.GetObjectFromJson<CarrinhoDeCompras>("Carrinho") ?? new CarrinhoDeCompras();
 
-            // Adiciona o item ao carrinho, incluindo informações do livro
             carrinho.AddLivroAoCarrinho(livroId, qntdLivros, valorLivro, livro.Titulo, livro.Imagem);
 
-            // Salva o carrinho atualizado na sessão
             HttpContext.Session.SetObjectAsJson("Carrinho", carrinho);
 
             return Ok("Livro adicionado ao carrinho com sucesso!");
@@ -50,7 +43,6 @@ namespace LivrariaSouza.Controllers
         // Remove um item do carrinho
         public IActionResult RemoveDoCarrinho(int livroId)
         {
-            // Recupera o carrinho da sessão ou cria um novo se não existir
             var carrinho = HttpContext.Session.GetObjectFromJson<CarrinhoDeCompras>("Carrinho") ?? new CarrinhoDeCompras();
             carrinho.RemoverLivroDoCarrinho(livroId);
             HttpContext.Session.SetObjectAsJson("Carrinho", carrinho);
@@ -66,7 +58,7 @@ namespace LivrariaSouza.Controllers
 
             if (item != null)
             {
-                item.QntdItem = qntdLivros; // Atualiza a quantidade
+                item.QntdItem = qntdLivros;
             }
 
             HttpContext.Session.SetObjectAsJson("Carrinho", carrinho);
@@ -74,6 +66,7 @@ namespace LivrariaSouza.Controllers
             return RedirectToAction("ViewCarrinho");
         }
 
+        // Renderiza a página para finalizar compra
         [HttpGet]
         public IActionResult FinalizarCompra()
         {

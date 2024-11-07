@@ -11,12 +11,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Adiciona suporte a cache e sessões
-builder.Services.AddDistributedMemoryCache(); // Armazena dados de sessão na memória do servidor
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Expira após 30 minutos de inatividade
-    options.Cookie.HttpOnly = true; // Bloqueia acesso via JavaScript (mais seguro)
-    options.Cookie.IsEssential = true; // Faz com que o cookie funcione sem consentimento de cookies (se necessário)
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
 });
 
 var app = builder.Build();
@@ -27,8 +27,8 @@ app.UseSession();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error"); // Lida com erros na produção
-    app.UseHsts(); // HSTS
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
 }
 
 // Configuração para redirecionar erros 404 para a ação HomePageCliente

@@ -92,13 +92,13 @@
 
         .card-value {
             font-size: 1rem;
-            color: #444; /* Mesma cor do título */
+            color: #444;
             font-weight: bold;
         }
 
         .card-price {
             font-size: 1rem;
-            color: #28a745; /* Verde para o preço de venda */
+            color: #28a745;
             font-weight: bold;
             margin-top: 5px;
         }
@@ -146,8 +146,8 @@
             }
 
         #btn-excluir {
-            display: none; /* Este botão só aparecerá quando houver seleções */
-            margin-top: 10px; /* Espaçamento entre o botão "Excluir Selecionados" e os outros botões */
+            display: none;
+            margin-top: 10px;
             background-color: #dc3545;
             color: white;
             border: none;
@@ -164,12 +164,12 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            display: flex; /* Alinha os botões lado a lado */
-            gap: 10px; /* Espaçamento entre os botões */
+            display: flex;
+            gap: 10px;
         }
 
         .btn-delete-one {
-            background-color: #007bff; /* Mudei para vermelho para "deletar" */
+            background-color: #007bff;
             color: white;
             padding: 10px 20px;
             border-radius: 5px;
@@ -178,7 +178,7 @@
         }
 
             .btn-delete-one:hover {
-                background-color: #007bff; /* Cor de hover para "deletar" */
+                background-color: #007bff;
             }
 
         .btn-add-livro {
@@ -199,7 +199,6 @@
     <a href="@Url.Action("RetornaTodosLivros", "Home")" class="home-icon"><i class="fas fa-home"></i></a>
     <h2 class="titulo-livros">Livraria Souza</h2>
 
-    <!-- Alerta de Mensagem -->
     @if (TempData["MensagemLivroAdicionado"] != null)
     {
         <div class="alert alert-@TempData["TipoMensagem"] alert-dismissible fade show" role="alert">
@@ -218,7 +217,7 @@
 
     <form id="form-excluir-livros" asp-action="DeletaLivrosEmBloco" method="post">
         @Html.AntiForgeryToken()
-        <div id="livroIdsContainer"></div> <!-- Contêiner para armazenar os inputs hidden -->
+        <div id="livroIdsContainer"></div>
         <button id="btn-excluir" type="submit" style="display: none;">Excluir Selecionados</button>
     </form>
 
@@ -275,7 +274,7 @@
         });
 
         function updateSelectedLivros() {
-            livroIdsContainer.innerHTML = ''; // Limpa o contêiner de inputs hidden
+            livroIdsContainer.innerHTML = '';
 
             const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
             deleteButton.style.display = anyChecked ? 'block' : 'none';

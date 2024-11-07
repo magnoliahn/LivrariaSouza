@@ -41,7 +41,6 @@
             gap: 10px;
         }
 
-
         .livro-detalhes {
             max-width: 900px;
             margin: 0 auto;
@@ -82,7 +81,7 @@
         }
 
         p {
-            font-size: 1rem; /* Diminui a fonte do restante do texto */
+            font-size: 1rem;
             line-height: 1.6;
             color: #666;
         }
@@ -109,7 +108,7 @@
         }
 
         .btn-adicionar {
-            background-color: #007bff; /* Cor do botão de adicionar */
+            background-color: #007bff;
             color: #fff;
             padding: 10px 15px;
             border: none;
@@ -119,10 +118,20 @@
             transition: background-color 0.3s;
         }
 
+        .quantidade-input {
+            width: 50px;
+            height: 40px;
+            text-align: center;
+            border: 1px solid #007bff;
+            border-radius: 4px;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
         .msg-alert {
             text-align: center;
             font-size: 1.1rem;
-            color: #d9534f; /* Cor do alerta */
+            color: #d9534f;
             margin: 20px 0;
         }
     </style>
@@ -154,11 +163,13 @@
                 {
                     <p><strong>Quantidade em Estoque:</strong> @Model.QntdEstoque</p>
 
-                    <!-- Botão para adicionar ao carrinho -->
+                    <label for="qntd">Quantidade:</label>
+                    <input type="number" id="qntd" name="qntdLivros" class="quantidade-input" min="1" max="@Model.QntdEstoque" value="1" />
+
                     <form id="adicionarCarrinhoForm" method="post">
                         <input type="hidden" name="livroId" value="@Model.Id" />
-                        <input type="hidden" name="qntdLivros" value="1" />
                         <input type="hidden" name="valorLivro" value="@Model.ValorVenda" />
+                        <input type="hidden" name="qntdLivros" id="qntdLivrosHidden" value="1" />
                         <button type="button" class="btn-adicionar" id="btnAdicionarCarrinho">Adicionar ao Carrinho</button>
                     </form>
                 }
@@ -167,7 +178,6 @@
                     <h4> Esgotado </h4>
                 }
 
-                <!-- Mensagem de alerta -->
                 <div class="msg-alert" id="mensagemSucesso" style="display:none;"></div>
             </div>
         </div>
@@ -176,17 +186,18 @@
     <script>
         $(document).ready(function () {
             $("#btnAdicionarCarrinho").click(function () {
+                var quantidade = $("#qntd").val();
+                $("#qntdLivrosHidden").val(quantidade);
+
                 var form = $("#adicionarCarrinhoForm");
                 $.ajax({
                     type: form.attr('method'),
                     url: '@Url.Action("AdicionarLivroAoCarrinho", "Carrinho")',
                     data: form.serialize(),
                     success: function (response) {
-                        // Exibir mensagem de sucesso
                         $("#mensagemSucesso").text("Livro adicionado ao carrinho com sucesso!").show();
                     },
                     error: function () {
-                        // Exibir mensagem de erro, se necessário
                         $("#mensagemSucesso").text("Ocorreu um erro ao adicionar o livro ao carrinho.").show();
                     }
                 });

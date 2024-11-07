@@ -35,8 +35,8 @@ public class HomeController : Controller
     [Route("/admin/CriarLivro")]
     public IActionResult CriarLivro(Livro livro)
     {
-        ModelState.Clear();
-        // Valida se título tem no max 100 caracteres
+        ModelState.Clear(); // Faz a limpeza do model para evitar erros precipitados
+
         if (livro.Titulo.Length > 100)
         {
             ModelState.AddModelError("Titulo", "O Titulo do livro não pode conter mais de 100 caracteres.");
@@ -44,7 +44,7 @@ public class HomeController : Controller
 
         var valorVenda = _valoresServices.ValidarCaracteres(livro.ValorVendaString);
 
-        // Valida se valor escolhido foi digitado corretamente
+        // Valida se valor de venda foi digitado corretamente
         if (valorVenda is string stringValorVenda)
         {
             ModelState.AddModelError("ValorVendaString", stringValorVenda);
@@ -70,7 +70,7 @@ public class HomeController : Controller
         if (livro.QntdEstoque < 0)
         {
             ViewData["MensagemEstoqueNegativo"] = "O estoque não pode ser negativo.";
-            ViewData["TipoMensagem"] = "danger"; // Usando 'danger' para um alerta vermelho
+            ViewData["TipoMensagem"] = "danger";
             return View(livro);
         }
 
@@ -79,7 +79,7 @@ public class HomeController : Controller
             _db.Livros.Add(livro);
             _db.SaveChanges();
             TempData["MensagemLivroAdicionado"] = "Livro adicionado com sucesso!";
-            TempData["TipoMensagem"] = "success"; // Alerta de sucesso
+            TempData["TipoMensagem"] = "success";
 
             return RedirectToAction("RetornaTodosLivros");
         }
@@ -95,7 +95,7 @@ public class HomeController : Controller
         {
             TempData["MensagemLivroDeletado"] = "Nenhum livro selecionado para excluir.";
             TempData["TipoMensagem"] = "error";
-            return RedirectToAction("RetornaTodosLivros"); // Redireciona para a lista de livros
+            return RedirectToAction("RetornaTodosLivros");
         }
 
         var livrosSelecionados = _db.Livros.Where(l => livroIds.Contains(l.Id)).ToList();
@@ -103,7 +103,7 @@ public class HomeController : Controller
         {
             TempData["MensagemLivroDeletado"] = "Nenhum livro encontrado para excluir.";
             TempData["TipoMensagem"] = "error";
-            return RedirectToAction("RetornaTodosLivros"); // Redireciona para a lista de livros
+            return RedirectToAction("RetornaTodosLivros");
         }
 
         _db.Livros.RemoveRange(livrosSelecionados);
@@ -112,13 +112,13 @@ public class HomeController : Controller
         TempData["MensagemLivroDeletado"] = "Livros excluídos com sucesso.";
         TempData["TipoMensagem"] = "success";
 
-        return RedirectToAction("RetornaTodosLivros"); // Redireciona para a lista de livros
+        return RedirectToAction("RetornaTodosLivros");
     }
 
     public IActionResult Error404()
     {
-        Response.StatusCode = 404; // Define o código de status para 404
-        return View("HomePageCliente"); // Retorna a view que você deseja exibir
+        Response.StatusCode = 404;
+        return View("HomePageCliente");
     }
 
 }
