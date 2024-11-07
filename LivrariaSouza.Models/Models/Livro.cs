@@ -13,9 +13,9 @@ namespace LivrariaSouza.Models.Models
         [Required]
         public string Imagem { get; set; }
         [Required]
-        public string Autor {  get; set; }
+        public string Autor { get; set; }
         [Required]
-        public int NumeroPag {  get; set; }
+        public int NumeroPag { get; set; }
 
         [NotMapped] // Isso impede que a propriedade seja mapeada no banco de dados
         public string? ValorVendaString { get; set; } // Propriedade temporária para entrada
@@ -31,6 +31,8 @@ namespace LivrariaSouza.Models.Models
         public decimal ValorCompra { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
+        [CustomValidation(typeof(Livro), nameof(ValidarAnoLancamento))]
         public DateTime AnoLancamento { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "A quantidade em estoque não pode ser negativa.")]
@@ -40,5 +42,16 @@ namespace LivrariaSouza.Models.Models
         [MaxLength(500)]
         public string Descricao { get; set; }
 
+
+        public static ValidationResult ValidarAnoLancamento(DateTime anoLancamento, ValidationContext context)
+        {
+            if (anoLancamento > DateTime.Now)
+            {
+                return new ValidationResult("Data de lançamento inválida.");
+            }
+            return ValidationResult.Success;
+        }
+
     }
 }
+
