@@ -148,8 +148,10 @@
             <span asp-validation-for="ValorCompraString" class="text-danger"></span>
         </div>
         <div>
-            <label>Data de Lançamento:</label>
-            <input type="date" asp-for="AnoLancamento" required id="AnoLancamento" />
+            <label for="AnoLancamento">Ano de Lançamento</label>
+            <input type="date" asp-for="AnoLancamento" required max="@DateTime.Now.ToString("yyyy-MM-dd")" title="Data de lançamento inválida." />
+
+            <span asp-validation-for="AnoLancamento" class="text-danger"></span>
         </div>
         <div>
             <label>Descrição:</label>
@@ -170,6 +172,20 @@
     </form>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const dataAtual = new Date().toISOString().split("T")[0];
+            const anoLancamentoInput = document.querySelector('input[type="date"][asp-for="AnoLancamento"]');
+            anoLancamentoInput.setAttribute('max', dataAtual);
+            anoLancamentoInput.addEventListener('change', function () {
+                if (anoLancamentoInput.value > dataAtual) {
+                    alert("Data de lançamento inválida.");
+                    anoLancamentoInput.value = dataAtual; 
+                }
+            });
+        });
+    </script>
+
+    <script>
         function verificarEstoque() {
             const estoque = document.querySelector('input[id="QntdEstoque"]').value;
             const statusText = document.getElementById('statusText');
@@ -180,13 +196,6 @@
                 statusText.innerText = "Disponível";
             }
         }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            verificarEstoque();
-
-            const dataAtual = new Date().toISOString().split("T")[0];
-            document.getElementById('AnoLancamento').setAttribute('max', dataAtual);
-        });
     </script>
 </body>
 </html>
