@@ -174,7 +174,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const dataAtual = new Date().toISOString().split("T")[0];
-            const anoLancamentoInput = document.querySelector('input[type="date"][asp-for="AnoLancamento"]');
+            const anoLancamentoInput = document.querySelector('input[type="date"][id="AnoLancamento"]');
             anoLancamentoInput.setAttribute('max', dataAtual);
             anoLancamentoInput.addEventListener('change', function () {
                 if (anoLancamentoInput.value > dataAtual) {

@@ -216,7 +216,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const dataAtual = new Date().toISOString().split("T")[0];
-            document.querySelector('input[type="date"][asp-for="AnoLancamento"]').setAttribute('max', dataAtual);
+            document.querySelector('input[type="date"][id="AnoLancamento"]').setAttribute('max', dataAtual);
         });
     </script>
 </body>
