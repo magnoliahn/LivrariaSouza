@@ -102,12 +102,6 @@
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
-
-        #statusDiv {
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: #007bff;
-        }
     </style>
 </head>
 <body>
@@ -163,39 +157,9 @@
         </div>
         <div>
             <label>Quantidade em Estoque:</label>
-            <input type="number" asp-for="QntdEstoque" oninput="verificarEstoque()" />
-        </div>
-        <div id="statusDiv">
-            <p>Status: <span id="statusText">Disponível</span></p>
+            <input type="number" asp-for="QntdEstoque" />
         </div>
         <button type="submit">Criar Livro</button>
     </form>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const dataAtual = new Date().toISOString().split("T")[0];
-            const anoLancamentoInput = document.querySelector('input[type="date"][asp-for="AnoLancamento"]');
-            anoLancamentoInput.setAttribute('max', dataAtual);
-            anoLancamentoInput.addEventListener('change', function () {
-                if (anoLancamentoInput.value > dataAtual) {
-                    alert("Data de lançamento inválida.");
-                    anoLancamentoInput.value = dataAtual; 
-                }
-            });
-        });
-    </script>
-
-    <script>
-        function verificarEstoque() {
-            const estoque = document.querySelector('input[id="QntdEstoque"]').value;
-            const statusText = document.getElementById('statusText');
-
-            if (estoque === "" || estoque <= 0) {
-                statusText.innerText = "Esgotado";
-            } else {
-                statusText.innerText = "Disponível";
-            }
-        }
-    </script>
 </body>
 </html>

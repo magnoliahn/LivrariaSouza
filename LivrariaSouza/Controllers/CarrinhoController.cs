@@ -75,17 +75,32 @@ namespace LivrariaSouza.Controllers
 
         // Processa a finalização da compra
         [HttpPost]
-        public IActionResult FinalizarCompra(FinalizarCompra model)
+        public IActionResult FinalizarCompra(FinalizarCompra model, CarrinhoDeCompras carrinho)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+            UpdateStock(carrinho);
             HttpContext.Session.Remove("Carrinho");
 
             TempData["Mensagem"] = "Compra finalizada com sucesso!";
             return RedirectToAction("ViewCarrinho");
         }
 
+        public void UpdateStock(CarrinhoDeCompras carrinho)
+        {
+            carrinho = HttpContext.Session.GetObjectFromJson<CarrinhoDeCompras>("Carrinho") ?? new CarrinhoDeCompras();
+
+            foreach (var item in carrinho.Itens)
+            {
+                var book = _db.Livros.FirstOrDefault(b => b.Id == item.IdItem);
+                if (book != null)
+                {
+                    book.QntdEstoque = book.QntdEstoque - item.QntdItem;
+                    _db.SaveChanges();
+                }
+            }
+        }
     }
 }

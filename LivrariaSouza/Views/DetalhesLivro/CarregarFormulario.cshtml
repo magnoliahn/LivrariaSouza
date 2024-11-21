@@ -213,11 +213,5 @@
             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
         </div>
     </form>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const dataAtual = new Date().toISOString().split("T")[0];
-            document.querySelector('input[type="date"][asp-for="AnoLancamento"]').setAttribute('max', dataAtual);
-        });
-    </script>
 </body>
 </html>
