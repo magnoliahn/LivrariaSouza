@@ -20,25 +20,33 @@ namespace LivrariaSouza.Controllers
             return View(carrinho);
         }
 
-        // Adiciona um item ao carrinho
         public IActionResult AdicionarLivroAoCarrinho(int livroId, int qntdLivros, decimal valorLivro)
         {
             var livro = _db.Livros.FirstOrDefault(l => l.Id == livroId);
-
             if (livro == null)
             {
                 TempData["Mensagem"] = "Livro não encontrado.";
                 return RedirectToAction("ViewCarrinho");
             }
-
+            if (qntdLivros <= 0)
+            {
+                TempData["Mensagem"] = "A quantidade deve ser um número inteiro e positivo.";
+                return RedirectToAction("ViewCarrinho");
+            }
             var carrinho = HttpContext.Session.GetObjectFromJson<CarrinhoDeCompras>("Carrinho") ?? new CarrinhoDeCompras();
 
+            if (qntdLivros > livro.QntdEstoque)
+            {
+                TempData["Mensagem"] = $"Quantidade solicitada ({qntdLivros}) excede o estoque disponível ({livro.QntdEstoque}).";
+                return RedirectToAction("ViewCarrinho");
+            }
             carrinho.AddLivroAoCarrinho(livroId, qntdLivros, valorLivro, livro.Titulo, livro.Imagem);
-
             HttpContext.Session.SetObjectAsJson("Carrinho", carrinho);
 
-            return Ok("Livro adicionado ao carrinho com sucesso!");
+            TempData["Mensagem"] = "Livro adicionado ao carrinho com sucesso!";
+            return RedirectToAction("ViewCarrinho");
         }
+
 
         // Remove um item do carrinho
         public IActionResult RemoveDoCarrinho(int livroId)
@@ -53,6 +61,24 @@ namespace LivrariaSouza.Controllers
         [HttpPost]
         public IActionResult UpdateQuantidade(int livroId, int qntdLivros)
         {
+            if (qntdLivros <= 0)
+            {
+                TempData["Mensagem"] = "A quantidade deve ser um número inteiro e positivo.";
+                return RedirectToAction("ViewCarrinho");
+            }
+            var livro = _db.Livros.FirstOrDefault(l => l.Id == livroId);
+            if (livro == null)
+            {
+                TempData["Mensagem"] = "Livro não encontrado.";
+                return RedirectToAction("ViewCarrinho");
+            }
+
+            if (qntdLivros > livro.QntdEstoque)
+            {
+                TempData["Mensagem"] = $"Quantidade solicitada ({qntdLivros}) excede o estoque disponível ({livro.QntdEstoque}).";
+                return RedirectToAction("ViewCarrinho");
+            }
+
             var carrinho = HttpContext.Session.GetObjectFromJson<CarrinhoDeCompras>("Carrinho") ?? new CarrinhoDeCompras();
             var item = carrinho.Itens.FirstOrDefault(i => i.IdItem == livroId);
 
@@ -60,11 +86,13 @@ namespace LivrariaSouza.Controllers
             {
                 item.QntdItem = qntdLivros;
             }
-
             HttpContext.Session.SetObjectAsJson("Carrinho", carrinho);
 
+            TempData["Mensagem"] = "Quantidade atualizada com sucesso!";
             return RedirectToAction("ViewCarrinho");
         }
+
+
 
         // Renderiza a página para finalizar compra
         [HttpGet]

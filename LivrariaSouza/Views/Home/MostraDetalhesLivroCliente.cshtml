@@ -145,6 +145,11 @@
     <a href="@Url.Action("HomePageCliente", "HomeCliente")" class="home-icon"><i class="fas fa-home"></i></a>
     <h2 class="titulo-livros">Detalhes do Livro</h2>
 
+    @if (TempData["Mensagem"] != null)
+    {
+        <div class="alert alert-info">@TempData["Mensagem"]</div>
+    }
+
     <div class="livro-detalhes">
         <div class="row">
             <div class="col-md-4">
@@ -163,14 +168,13 @@
                 {
                     <p><strong>Quantidade em Estoque:</strong> @Model.QntdEstoque</p>
 
-                    <label for="qntd">Quantidade:</label>
-                    <input type="number" id="qntd" name="qntdLivros" class="quantidade-input" min="1" max="@Model.QntdEstoque" value="1" />
-
-                    <form id="adicionarCarrinhoForm" method="post">
+                    <form id="adicionarCarrinhoForm" method="post" action="@Url.Action("AdicionarLivroAoCarrinho", "Carrinho")">
                         <input type="hidden" name="livroId" value="@Model.Id" />
                         <input type="hidden" name="valorLivro" value="@Model.ValorVenda" />
                         <input type="hidden" name="qntdLivros" id="qntdLivrosHidden" value="1" />
-                        <button type="button" class="btn-adicionar" id="btnAdicionarCarrinho">Adicionar ao Carrinho</button>
+                        <label for="qntd">Quantidade:</label>
+                        <input type="number" id="qntd" name="qntdLivros" class="quantidade-input" min="1" max="@Model.QntdEstoque" value="1" />
+                        <button type="submit" class="btn-adicionar">Adicionar ao Carrinho</button>
                     </form>
                 }
                 else
@@ -182,27 +186,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-        $(document).ready(function () {
-            $("#btnAdicionarCarrinho").click(function () {
-                var quantidade = $("#qntd").val();
-                $("#qntdLivrosHidden").val(quantidade);
-
-                var form = $("#adicionarCarrinhoForm");
-                $.ajax({
-                    type: form.attr('method'),
-                    url: '@Url.Action("AdicionarLivroAoCarrinho", "Carrinho")',
-                    data: form.serialize(),
-                    success: function (response) {
-                        $("#mensagemSucesso").text("Livro adicionado ao carrinho com sucesso!").show();
-                    },
-                    error: function () {
-                        $("#mensagemSucesso").text("Ocorreu um erro ao adicionar o livro ao carrinho.").show();
-                    }
-                });
-            });
-        });
-    </script>
 </body>
-</html>
+

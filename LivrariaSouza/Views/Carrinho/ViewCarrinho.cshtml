@@ -123,6 +123,11 @@
     <h2>Carrinho de Compras</h2>
     <a href="@Url.Action("HomePageCliente", "HomeCliente")" class="home-icon"><i class="fas fa-home"></i></a>
 
+    @if (TempData["Mensagem"] != null)
+    {
+        <div class="alert alert-info">@TempData["Mensagem"]</div>
+    }
+
     @if (Model.Itens.Any())
     {
         <table class="table">

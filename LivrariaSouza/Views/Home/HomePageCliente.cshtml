@@ -157,7 +157,12 @@
     <h2 class="titulo-livros">Livraria Souza</h2>
     <a href="@Url.Action("HomePageCliente", "HomeCliente")" class="home-icon"><i class="fas fa-home"></i></a>
 
-    <div id="msgAlert" class="msg-alert" style="display:none;"></div>
+    @if (TempData["Mensagem"] != null)
+    {
+        <div class="alert alert-info">@TempData["Mensagem"]</div>
+        TempData.Remove("Mensagem");
+    }
+
 
     <div class="row">
         @foreach (var livro in Model)
@@ -180,7 +185,7 @@
                                 <input type="hidden" name="valorLivro" value="@livro.ValorVenda" />
                                 <label for="qntd-@livro.Id">Quantidade:</label>
                                 <input type="number" id="qntd-@livro.Id" name="qntdLivros" class="quantidade-input" min="1" max="@livro.QntdEstoque" value="1" />
-                                <button type="button" class="btn btn-adicionar adicionar-livro-btn">Adicionar ao Carrinho</button>
+                                <button type="submit" class="btn btn-adicionar adicionar-livro-btn">Adicionar ao Carrinho</button>
                             </form>
                         }
                         else
@@ -192,38 +197,4 @@
             </div>
         }
     </div>
-
-    <script>
-        document.querySelectorAll('.adicionar-livro-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const form = this.closest('.adicionar-livro-form');
-                const formData = new FormData(form);
-
-                fetch(form.action, {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.text();
-                        }
-                        throw new Error('Erro ao adicionar o livro ao carrinho.');
-                    })
-                    .then(message => {
-                        const msgAlert = document.getElementById('msgAlert');
-                        msgAlert.innerText = "Livro adicionado ao carrinho com sucesso!";
-                        msgAlert.style.display = "block";
-                        setTimeout(() => {
-                            msgAlert.style.display = "none";
-                        }, 3000);
-                    })
-                    .catch(error => {
-                        const msgAlert = document.getElementById('msgAlert');
-                        msgAlert.innerText = error.message;
-                        msgAlert.style.display = "block";
-                    });
-            });
-        });
-    </script>
 </body>
-</html>
