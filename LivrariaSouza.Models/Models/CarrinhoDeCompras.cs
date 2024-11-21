@@ -7,6 +7,10 @@
         // Adiciona ou atualiza a quantidade de um item no carrinho
         public void AddLivroAoCarrinho(int livroId, int quantidade, decimal valor, string nomeLivro, string imagemLivro)
         {
+            if (quantidade <= 0)
+            {
+                return;
+            }
             var itemExistente = Itens.FirstOrDefault(i => i.IdItem == livroId);
             if (itemExistente != null)
             {
