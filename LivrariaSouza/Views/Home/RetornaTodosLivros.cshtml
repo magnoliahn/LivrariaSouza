@@ -48,12 +48,14 @@
         }
 
         .col-md-2 {
-            padding: 0;
+            flex: 0 0 48%; /* Dois livros por linha */
+            margin-bottom: 20px;
         }
 
         .card {
-            flex: 0 0 calc(20% - 10px);
-            height: 425px;
+            display: flex;
+            flex-direction: row; /* Alinha a imagem e o conteúdo na horizontal */
+            height: 200px;
             border: 1px solid #ddd;
             border-radius: 8px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -68,18 +70,21 @@
             }
 
             .card img {
-                width: 100%;
-                height: 300px;
+                width: 60%; 
+                height: auto;
                 object-fit: cover;
             }
 
         .card-body {
-            padding: 10px;
-            text-align: center;
+            padding: 15px;
+            text-align: left;
+            width: 70%; /* O conteúdo ocupa os 60% restantes */
+            display: flex;
+            flex-direction: column;
         }
 
         .card-title {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: bold;
             margin: 10px 0;
             color: #444;
@@ -102,8 +107,6 @@
             font-weight: bold;
             margin-top: 5px;
         }
-
-
 
         .btn-primary {
             padding: 10px 20px;
@@ -250,7 +253,6 @@
         }
     </div>
 
-
     <script>
         const checkboxes = document.querySelectorAll('.book-checkbox');
         const deleteOneButton = document.getElementById('delete-one');
@@ -258,7 +260,6 @@
         const livroIdsContainer = document.getElementById('livroIdsContainer');
         let checkboxesVisible = false;
 
-        // Exibir/ocultar checkboxes
         deleteOneButton.addEventListener('click', function () {
             checkboxesVisible = !checkboxesVisible;
             checkboxes.forEach(checkbox => {
@@ -266,7 +267,6 @@
             });
         });
 
-        // Atualizar o formulário com livros selecionados
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function () {
                 updateSelectedLivros();
@@ -275,20 +275,26 @@
 
         function updateSelectedLivros() {
             livroIdsContainer.innerHTML = '';
-
-            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
-            deleteButton.style.display = anyChecked ? 'block' : 'none';
-
-            // Adiciona um input hidden para cada livro selecionado
+            let selectedLivros = [];
             checkboxes.forEach(checkbox => {
                 if (checkbox.checked) {
+                    selectedLivros.push(checkbox.value);
+                }
+            });
+
+            if (selectedLivros.length > 0) {
+                deleteButton.style.display = 'inline-block';
+                selectedLivros.forEach(livroId => {
                     const input = document.createElement('input');
                     input.type = 'hidden';
                     input.name = 'livroIds';
-                    input.value = checkbox.value;
+                    input.value = livroId;
                     livroIdsContainer.appendChild(input);
-                }
-            });
+                });
+            } else {
+                deleteButton.style.display = 'none';
+            }
         }
     </script>
 </body>
+</html>
