@@ -15,7 +15,7 @@ namespace LivrariaSouza.Controllers
         [Route("/admin/DetalhesLivro")]
         public IActionResult MostraDetalhesLivro(int id)
         {
-            var livro = _db.Livros.FirstOrDefault(l => l.Id == id);
+            var livro = _db.Livros.FirstOrDefault(l => l.LivroId == id);
             if (livro == null)
             {
                 return View("NotFound");
@@ -26,7 +26,7 @@ namespace LivrariaSouza.Controllers
         [Route("/admin/EditarLivro")]
         public IActionResult CarregarFormulario(int Id)
         {
-            var livro = _db.Livros.FirstOrDefault(l => l.Id == Id);
+            var livro = _db.Livros.FirstOrDefault(l => l.LivroId == Id);
             if (livro == null)
             {
                 return View("NotFound");
@@ -44,7 +44,7 @@ namespace LivrariaSouza.Controllers
                 return View("CarregarFormulario", livroEditado);
             }
 
-            var livro = _db.Livros.FirstOrDefault(l => l.Id == livroEditado.Id);
+            var livro = _db.Livros.FirstOrDefault(l => l.LivroId == livroEditado.LivroId);
             if (livro == null)
             {
                 return View("NotFound");
@@ -62,7 +62,7 @@ namespace LivrariaSouza.Controllers
 
             _db.SaveChanges();
 
-            return RedirectToAction("MostraDetalhesLivro", new { id = livro.Id });
+            return RedirectToAction("MostraDetalhesLivro", new { id = livro.LivroId });
         }
 
         [HttpPost]
@@ -70,7 +70,7 @@ namespace LivrariaSouza.Controllers
         [Route("/admin/DeletarLivro")]
         public IActionResult DeletaLivro(int id)
         {
-            var livro = _db.Livros.FirstOrDefault(l => l.Id == id);
+            var livro = _db.Livros.FirstOrDefault(l => l.LivroId == id);
 
             if (livro == null)
             {

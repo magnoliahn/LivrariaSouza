@@ -152,11 +152,11 @@
             </div>
         </div>
         <div class="button-container">
-            <a href="@Url.Action("CarregarFormulario", "DetalhesLivro", new { id = Model.Id })" class="btn btn-primary">Editar</a>
+            <a href="@Url.Action("CarregarFormulario", "DetalhesLivro", new { id = Model.LivroId })" class="btn btn-primary">Editar</a>
 
             <form asp-action="DeletaLivro" asp-controller="DetalhesLivro" method="post" style="display:inline-block;">
                 @Html.AntiForgeryToken()
-                <input type="hidden" name="id" value="@Model.Id" />
+                <input type="hidden" name="id" value="@Model.LivroId" />
                 <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja deletar este livro?');">Deletar</button>
             </form>
         </div>

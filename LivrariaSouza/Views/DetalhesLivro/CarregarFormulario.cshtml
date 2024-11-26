@@ -152,7 +152,7 @@
     <h2>Editar Livro</h2>
 
     <form asp-action="EditarDetalhesLivro" asp-controller="DetalhesLivro" method="post">
-        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="LivroId" />
 
         <div class="form-group">
             <label for="Titulo">Título</label>
@@ -209,7 +209,7 @@
         </div>
 
         <div class="button-container">
-            <a href="@Url.Action("MostraDetalhesLivro", new { Id = Model.Id })" class="cancel-btn">Cancelar</a>
+            <a href="@Url.Action("MostraDetalhesLivro", new { Id = Model.LivroId })" class="cancel-btn">Cancelar</a>
             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
         </div>
     </form>
