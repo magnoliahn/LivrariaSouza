@@ -167,15 +167,14 @@
                 @if (Model.QntdEstoque > 0)
                 {
                     <p><strong>Quantidade em Estoque:</strong> @Model.QntdEstoque</p>
-
                     <form id="adicionarCarrinhoForm" method="post" action="@Url.Action("AdicionarLivroAoCarrinho", "Carrinho")">
-                        <input type="hidden" name="livroId" value="@Model.Id" />
+                        <input type="hidden" name="livroId" value="@Model.LivroId" />
                         <input type="hidden" name="valorLivro" value="@Model.ValorVenda" />
-                        <input type="hidden" name="qntdLivros" id="qntdLivrosHidden" value="1" />
-                        <label for="qntd">Quantidade:</label>
-                        <input type="number" id="qntd" name="qntdLivros" class="quantidade-input" min="1" max="@Model.QntdEstoque" value="1" />
+                        <label for="qntd-@Model.LivroId">Quantidade:</label>
+                        <input type="number" id="qntd-@Model.LivroId" name="qntdLivros" class="quantidade-input" min="1" max="@Model.QntdEstoque" value="1" />
                         <button type="submit" class="btn-adicionar">Adicionar ao Carrinho</button>
                     </form>
+
                 }
                 else
                 {

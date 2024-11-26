@@ -235,13 +235,13 @@
         {
             <div class="col-md-2">
                 <div class="card mb-4">
-                    <input type="checkbox" class="book-checkbox" value="@livro.Id" style="display: none;" />
-                    <a href="@Url.Action("MostraDetalhesLivro", "DetalhesLivro", new { id = livro.Id })">
+                    <input type="checkbox" class="book-checkbox" value="@livro.LivroId" style="display: none;" />
+                    <a href="@Url.Action("MostraDetalhesLivro", "DetalhesLivro", new { id = livro.LivroId })">
                         <img src="@livro.Imagem" class="card-img-top" alt="@livro.Titulo" />
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">
-                            <a href="@Url.Action("MostraDetalhesLivro", "DetalhesLivro", new { id = livro.Id })">@livro.Titulo</a>
+                            <a href="@Url.Action("MostraDetalhesLivro", "DetalhesLivro", new { id = livro.LivroId })">@livro.Titulo</a>
                         </h5>
                         <p class="card-value">
                             Estoque: @(livro.QntdEstoque == 0 ? "Esgotado" : livro.QntdEstoque.ToString())

@@ -22,7 +22,7 @@ namespace LivrariaSouza.Controllers
 
         public IActionResult AdicionarLivroAoCarrinho(int livroId, int qntdLivros, decimal valorLivro)
         {
-            var livro = _db.Livros.FirstOrDefault(l => l.Id == livroId);
+            var livro = _db.Livros.FirstOrDefault(l => l.LivroId == livroId);
             if (livro == null)
             {
                 TempData["Mensagem"] = "Livro não encontrado.";
@@ -48,6 +48,7 @@ namespace LivrariaSouza.Controllers
         }
 
 
+
         // Remove um item do carrinho
         public IActionResult RemoveDoCarrinho(int livroId)
         {
@@ -66,7 +67,7 @@ namespace LivrariaSouza.Controllers
                 TempData["Mensagem"] = "A quantidade deve ser um número inteiro e positivo.";
                 return RedirectToAction("ViewCarrinho");
             }
-            var livro = _db.Livros.FirstOrDefault(l => l.Id == livroId);
+            var livro = _db.Livros.FirstOrDefault(l => l.LivroId == livroId);
             if (livro == null)
             {
                 TempData["Mensagem"] = "Livro não encontrado.";
@@ -91,9 +92,6 @@ namespace LivrariaSouza.Controllers
             TempData["Mensagem"] = "Quantidade atualizada com sucesso!";
             return RedirectToAction("ViewCarrinho");
         }
-
-
-
         // Renderiza a página para finalizar compra
         [HttpGet]
         public IActionResult FinalizarCompra()
@@ -122,7 +120,7 @@ namespace LivrariaSouza.Controllers
 
             foreach (var item in carrinho.Itens)
             {
-                var book = _db.Livros.FirstOrDefault(b => b.Id == item.IdItem);
+                var book = _db.Livros.FirstOrDefault(b => b.LivroId == item.IdItem);
                 if (book != null)
                 {
                     book.QntdEstoque = book.QntdEstoque - item.QntdItem;

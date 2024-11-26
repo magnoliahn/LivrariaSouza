@@ -6,7 +6,7 @@ namespace LivrariaSouza.Models.Models
     public class Livro
     {
         [Key]
-        public int Id { get; set; }
+        public int LivroId { get; set; }
         [Required]
         public string Titulo { get; set; }
         [Required]

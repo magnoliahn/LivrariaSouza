@@ -98,7 +98,7 @@ public class HomeController : Controller
             return RedirectToAction("RetornaTodosLivros");
         }
 
-        var livrosSelecionados = _db.Livros.Where(l => livroIds.Contains(l.Id)).ToList();
+        var livrosSelecionados = _db.Livros.Where(l => livroIds.Contains(l.LivroId)).ToList();
         if (!livrosSelecionados.Any())
         {
             TempData["MensagemLivroDeletado"] = "Nenhum livro encontrado para excluir.";
