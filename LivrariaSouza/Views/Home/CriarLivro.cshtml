@@ -143,9 +143,9 @@
         </div>
         <div>
             <label for="AnoLancamento">Ano de Lançamento</label>
-            <input type="date" asp-for="AnoLancamento" required max="@DateTime.Now.ToString("yyyy-MM-dd")" title="Data de lançamento inválida." />
+            <input type="date" asp-for="DataLancamento" required max="@DateTime.Now.ToString("yyyy-MM-dd")" title="Data de lançamento inválida." />
 
-            <span asp-validation-for="AnoLancamento" class="text-danger"></span>
+            <span asp-validation-for="DataLancamento" class="text-danger"></span>
         </div>
         <div>
             <label>Descrição:</label>
@@ -153,7 +153,7 @@
         </div>
         <div>
             <label>Foto (URL):</label>
-            <input type="text" asp-for="Imagem" required />
+            <input type="text" asp-for="CapaLivro" required />
         </div>
         <div>
             <label>Quantidade em Estoque:</label>

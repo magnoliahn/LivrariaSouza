@@ -10,7 +10,7 @@ namespace LivrariaSouza.Models.Models
         [Required]
         public string Titulo { get; set; }
         [Required]
-        public string Imagem { get; set; }
+        public string CapaLivro { get; set; }
         [Required]
         public string Autor { get; set; }
         [Required]
@@ -32,7 +32,7 @@ namespace LivrariaSouza.Models.Models
         [Required]
         [DataType(DataType.Date)]
         [CustomValidation(typeof(Livro), nameof(ValidarAnoLancamento))]
-        public DateTime AnoLancamento { get; set; }
+        public DateTime DataLancamento { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "A quantidade em estoque não pode ser negativa.")]
         [Required]
@@ -53,4 +53,3 @@ namespace LivrariaSouza.Models.Models
 
     }
 }
-

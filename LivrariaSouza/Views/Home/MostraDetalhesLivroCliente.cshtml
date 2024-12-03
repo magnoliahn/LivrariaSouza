@@ -153,14 +153,14 @@
     <div class="livro-detalhes">
         <div class="row">
             <div class="col-md-4">
-                <img src="@Model.Imagem" alt="@Model.Titulo" class="livro-imagem-detalhes" />
+                <img src="@Model.CapaLivro" alt="@Model.Titulo" class="livro-imagem-detalhes" />
             </div>
             <div class="col-md-8">
                 <h3>@Model.Titulo</h3>
                 <p><strong>Autor:</strong> @Model.Autor</p>
                 <p><strong>Número de Páginas:</strong> @Model.NumeroPag</p>
                 <p><strong>Preço:</strong> @Model.ValorVenda.ToString("C")</p>
-                <p><strong>Data de Lançamento:</strong> @Model.AnoLancamento.ToShortDateString()</p>
+                <p><strong>Data de Lançamento:</strong> @Model.DataLancamento.ToShortDateString()</p>
                 <p><strong>Descrição:</strong> @Model.Descricao</p>
 
                 <p><strong>Status:</strong> @(Model.QntdEstoque > 0 ? "Disponível" : "Esgotado")</p>

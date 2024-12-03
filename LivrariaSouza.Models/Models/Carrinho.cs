@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LivrariaSouza.Models.Models
 {
     public class Carrinho
     {
-        public int CarrinhoId { get; set; } 
-        public int LivroId { get; set; }
-        public int Quantidade { get; set; }
-        public decimal Valor { get; set; }
-        public string Titulo { get; set; }
-        public string Imagem { get; set; }
-        public string SessionId { get; set; }  // id único da sessão
-    }
+        public int IdCarrinho { get; set; }
 
+        [ForeignKey("Livro")]
+        public int LivroId { get; set; }
+        public Livro Livro { get; set; }
+        
+        [ForeignKey("Usuario")]
+        public int IdUsuario { get; set; }
+        public Usuario Usuario { get; set; }
+        public int Quantidade { get; set; }
+        public decimal ValorUnit { get; set; }
+        public int Subtotal { get; set; }
+    }
 }
