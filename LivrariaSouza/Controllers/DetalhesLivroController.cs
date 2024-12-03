@@ -51,12 +51,12 @@ namespace LivrariaSouza.Controllers
             }
 
             livro.Titulo = livroEditado.Titulo;
-            livro.Imagem = livroEditado.Imagem;
+            livro.CapaLivro = livroEditado.CapaLivro;
             livro.Autor = livroEditado.Autor;
             livro.NumeroPag = livroEditado.NumeroPag;
             livro.ValorVenda = livroEditado.ValorVenda;
             livro.ValorCompra = livroEditado.ValorCompra;
-            livro.AnoLancamento = livroEditado.AnoLancamento;
+            livro.DataLancamento = livroEditado.DataLancamento;
             livro.QntdEstoque = livroEditado.QntdEstoque;
             livro.Descricao = livroEditado.Descricao;
 
