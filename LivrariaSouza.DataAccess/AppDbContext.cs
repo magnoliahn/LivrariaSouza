@@ -34,6 +34,10 @@ namespace LivrariaSouza.DataAccess
                       .HasForeignKey(c => c.IdUsuario);
 
             });
+
+            modelBuilder.Entity<Usuario>().HasData(
+                new Usuario { IdUsuario = 1, Nome = "Eduardo Azoia", Email = "Eduardo.Azoia@valtech.com", Senha = "123456", Telefone = "(48) 91234-8754" }
+                );
         }
     }
 }
