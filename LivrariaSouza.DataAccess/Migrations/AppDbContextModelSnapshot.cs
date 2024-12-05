@@ -164,6 +164,16 @@ namespace LivrariaSouza.DataAccess.Migrations
                     b.HasKey("IdUsuario");
 
                     b.ToTable("Usuarios");
+
+                    b.HasData(
+                        new
+                        {
+                            IdUsuario = 1,
+                            Email = "Eduardo.Azoia@valtech.com",
+                            Nome = "Eduardo Azoia",
+                            Senha = "123456",
+                            Telefone = "(48) 91234-8754"
+                        });
                 });
 
             modelBuilder.Entity("LivrariaSouza.Models.Models.Carrinho", b =>

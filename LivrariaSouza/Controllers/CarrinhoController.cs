@@ -1,98 +1,112 @@
-﻿//using LivrariaSouza.DataAccess;
-//using LivrariaSouza.Models.Models;
-//using Microsoft.AspNetCore.Mvc;
+﻿using LivrariaSouza.DataAccess;
+using LivrariaSouza.Models.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-//namespace LivrariaSouza.Controllers
-//{
-//    public class CarrinhoController : Controller
-//    {
-//        private readonly AppDbContext _db;
-//        public CarrinhoController(AppDbContext db)
-//        {
-//            _db = db;
-//        }
+namespace LivrariaSouza.Controllers
+{
+    public class CarrinhoController : Controller
+    {
+        private readonly AppDbContext _db;
+        public CarrinhoController(AppDbContext db)
+        {
+            _db = db;
+        }
 
-//        // Exibe o carrinho
-//        public IActionResult ViewCarrinho()
-//        {
-//            var carrinho = HttpContext.Session.GetObjectFromJson<CarrinhoDeCompras>("Carrinho") ?? new CarrinhoDeCompras();
+        // Exibe o carrinho
+        public IActionResult ViewCarrinho(int userId)
+        {
+            var carrinho = _db.Carrinhos.Include(c => c.Livro).Where(c => c.IdUsuario == userId).ToList();
 
-//            return View(carrinho);
-//        }
+            return View(carrinho);
+        }
 
-//        public IActionResult AdicionarLivroAoCarrinho(int livroId, int qntdLivros, decimal valorLivro)
-//        {
-//            var livro = _db.Livros.FirstOrDefault(l => l.LivroId == livroId);
-//            if (livro == null)
-//            {
-//                TempData["Mensagem"] = "Livro não encontrado.";
-//                return RedirectToAction("ViewCarrinho");
-//            }
-//            if (qntdLivros <= 0)
-//            {
-//                TempData["Mensagem"] = "A quantidade deve ser um número inteiro e positivo.";
-//                return RedirectToAction("ViewCarrinho");
-//            }
-//            var carrinho = HttpContext.Session.GetObjectFromJson<CarrinhoDeCompras>("Carrinho") ?? new CarrinhoDeCompras();
+        public IActionResult AdicionarLivroAoCarrinho(int userId, int livroId, int quantidade)
+        {
+            var livro = _db.Livros.FirstOrDefault(l => l.LivroId == livroId);
 
-//            if (qntdLivros > livro.QntdEstoque)
-//            {
-//                TempData["Mensagem"] = $"Quantidade solicitada ({qntdLivros}) excede o estoque disponível ({livro.QntdEstoque}).";
-//                return RedirectToAction("ViewCarrinho");
-//            }
-//            carrinho.AddLivroAoCarrinho(livroId, qntdLivros, valorLivro, livro.Titulo, livro.Imagem);
-//            HttpContext.Session.SetObjectAsJson("Carrinho", carrinho);
+            if (livro == null)
+            {
+                TempData["Mensagem"] = "Livro não encontrado.";
+                return RedirectToAction("ViewCarrinho", new { userId });
+            }
+            if (quantidade <= 0)
+            {
+                TempData["Mensagem"] = "A quantidade deve ser um número inteiro e positivo.";
+                return RedirectToAction("ViewCarrinho", new { userId });
+            }
+            var carrinho = _db.Carrinhos.FirstOrDefault(c => c.LivroId == livroId && c.IdUsuario == userId);
 
-//            TempData["Mensagem"] = "Livro adicionado ao carrinho com sucesso!";
-//            return RedirectToAction("ViewCarrinho");
-//        }
+            if (carrinho == null)
+            {
+                carrinho = new Carrinho
+                {
+                    LivroId = livroId,
+                    IdUsuario = userId,
+                    Quantidade = quantidade,
+                    ValorUnit = livro.ValorVenda,
+                    Subtotal = (int)(livro.ValorVenda * quantidade)
+                };
+
+                _db.Carrinhos.Add(carrinho);
+            }
+            else
+            {
+                int livrosNoCarrinho = carrinho.Quantidade + quantidade;
+                if (livrosNoCarrinho > livro.QntdEstoque)
+                {
+                    TempData["Mensagem"] = $"A quantidade adicionada ao carrinho de ({livrosNoCarrinho}) excede o estoque disponível ({livro.QntdEstoque}).";
+                    return RedirectToAction("ViewCarrinho", new { userId });
+                }
+                carrinho.Quantidade += quantidade;
+                carrinho.Subtotal = (int)(carrinho.Quantidade * carrinho.ValorUnit);
+            }
+            _db.SaveChanges();
+            TempData["Mensagem"] = "Livro adicionado ao carrinho com sucesso!";
+            return RedirectToAction("ViewCarrinho", new { userId });
+        }
 
 
+        public IActionResult RemoveDoCarrinho(int userId, int livroId)
+        {
+            var carrinho = _db.Carrinhos.FirstOrDefault(c => c.LivroId == livroId && c.IdUsuario == userId);
 
-//        // Remove um item do carrinho
-//        public IActionResult RemoveDoCarrinho(int livroId)
-//        {
-//            var carrinho = HttpContext.Session.GetObjectFromJson<CarrinhoDeCompras>("Carrinho") ?? new CarrinhoDeCompras();
-//            carrinho.RemoverLivroDoCarrinho(livroId);
-//            HttpContext.Session.SetObjectAsJson("Carrinho", carrinho);
-//            return RedirectToAction("ViewCarrinho");
-//        }
+            if (carrinho != null)
+            {
+                _db.Carrinhos.Remove(carrinho);
+                _db.SaveChanges();
+            }
 
-//        // Atualiza a quantidade de um item no carrinho
-//        [HttpPost]
-//        public IActionResult UpdateQuantidade(int livroId, int qntdLivros)
-//        {
-//            if (qntdLivros <= 0)
-//            {
-//                TempData["Mensagem"] = "A quantidade deve ser um número inteiro e positivo.";
-//                return RedirectToAction("ViewCarrinho");
-//            }
-//            var livro = _db.Livros.FirstOrDefault(l => l.LivroId == livroId);
-//            if (livro == null)
-//            {
-//                TempData["Mensagem"] = "Livro não encontrado.";
-//                return RedirectToAction("ViewCarrinho");
-//            }
+            return RedirectToAction("ViewCarrinho", new { userId });
+        }
 
-//            if (qntdLivros > livro.QntdEstoque)
-//            {
-//                TempData["Mensagem"] = $"Quantidade solicitada ({qntdLivros}) excede o estoque disponível ({livro.QntdEstoque}).";
-//                return RedirectToAction("ViewCarrinho");
-//            }
+        // Atualiza a quantidade de um item no carrinho
+        [HttpPost]
+        public IActionResult AtualizaQuantidade(int userId, int livroId, int quantidade)
+        {
+            if (quantidade <= 0)
+            {
+                TempData["Mensagem"] = "A quantidade deve ser um número inteiro e positivo.";
+                return RedirectToAction("ViewCarrinho", new { userId });
+            }
 
-//            var carrinho = HttpContext.Session.GetObjectFromJson<CarrinhoDeCompras>("Carrinho") ?? new CarrinhoDeCompras();
-//            var item = carrinho.Itens.FirstOrDefault(i => i.IdItem == livroId);
+            var carrinho = _db.Carrinhos.FirstOrDefault(c => c.LivroId == livroId && c.IdUsuario == userId);
 
-//            if (item != null)
-//            {
-//                item.QntdItem = qntdLivros;
-//            }
-//            HttpContext.Session.SetObjectAsJson("Carrinho", carrinho);
+            if (carrinho != null)
+            {
+                carrinho.Quantidade = quantidade;
+                carrinho.Subtotal = (int)(carrinho.ValorUnit * quantidade);
 
-//            TempData["Mensagem"] = "Quantidade atualizada com sucesso!";
-//            return RedirectToAction("ViewCarrinho");
-//        }
-//        // Renderiza a página para finalizar compra
+                _db.SaveChanges();
+            }
+
+            TempData["Mensagem"] = "Quantidade atualizada com sucesso!";
+            return RedirectToAction("ViewCarrinho", new { userId });
+        }
+    }
+}
+
+        // Renderiza a página para finalizar compra
 //        [HttpGet]
 //        public IActionResult FinalizarCompra()
 //        {
