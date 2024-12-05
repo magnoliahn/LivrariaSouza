@@ -33,6 +33,8 @@ namespace LivrariaSouza.DataAccess
                       .WithMany() // Um comprador pode ter vários itens no carrinho
                       .HasForeignKey(c => c.IdUsuario);
 
+
+
             });
 
             modelBuilder.Entity<Usuario>().HasData(
