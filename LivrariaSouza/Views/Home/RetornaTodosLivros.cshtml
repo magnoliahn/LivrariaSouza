@@ -237,7 +237,7 @@
                 <div class="card mb-4">
                     <input type="checkbox" class="book-checkbox" value="@livro.LivroId" style="display: none;" />
                     <a href="@Url.Action("MostraDetalhesLivro", "DetalhesLivro", new { id = livro.LivroId })">
-                        <img src="@livro.Imagem" class="card-img-top" alt="@livro.Titulo" />
+                        <img src="@livro.CapaLivro" class="card-img-top" alt="@livro.Titulo" />
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">

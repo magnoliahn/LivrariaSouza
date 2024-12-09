@@ -4,6 +4,7 @@ using LivrariaSouza.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LivrariaSouza.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241209161921_ajusteNaTabelaDetalhesVendaPt1")]
+    partial class ajusteNaTabelaDetalhesVendaPt1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,9 +66,6 @@ namespace LivrariaSouza.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IdRegistroVenda")
-                        .HasColumnType("int");
-
                     b.Property<int>("LivroId")
                         .HasColumnType("int");
 
@@ -80,8 +80,6 @@ namespace LivrariaSouza.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("IdDetalhe");
-
-                    b.HasIndex("IdRegistroVenda");
 
                     b.HasIndex("LivroId");
 
@@ -221,12 +219,6 @@ namespace LivrariaSouza.DataAccess.Migrations
 
             modelBuilder.Entity("LivrariaSouza.Models.Models.DetalhesVenda", b =>
                 {
-                    b.HasOne("LivrariaSouza.Models.Models.RegistroDeVendas", "RegistroDeVendas")
-                        .WithMany()
-                        .HasForeignKey("IdRegistroVenda")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LivrariaSouza.Models.Models.Livro", "Livro")
                         .WithMany()
                         .HasForeignKey("LivroId")
@@ -234,8 +226,6 @@ namespace LivrariaSouza.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Livro");
-
-                    b.Navigation("RegistroDeVendas");
                 });
 
             modelBuilder.Entity("LivrariaSouza.Models.Models.RegistroDeVendas", b =>

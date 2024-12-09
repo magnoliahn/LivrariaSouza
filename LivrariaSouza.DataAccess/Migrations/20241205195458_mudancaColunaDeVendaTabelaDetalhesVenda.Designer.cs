@@ -4,6 +4,7 @@ using LivrariaSouza.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LivrariaSouza.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241205195458_mudancaColunaDeVendaTabelaDetalhesVenda")]
+    partial class mudancaColunaDeVendaTabelaDetalhesVenda
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,6 +75,9 @@ namespace LivrariaSouza.DataAccess.Migrations
                     b.Property<int>("Quantidade")
                         .HasColumnType("int");
 
+                    b.Property<int>("RegistroVendaIdCompra")
+                        .HasColumnType("int");
+
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -81,9 +87,9 @@ namespace LivrariaSouza.DataAccess.Migrations
 
                     b.HasKey("IdDetalhe");
 
-                    b.HasIndex("IdRegistroVenda");
-
                     b.HasIndex("LivroId");
+
+                    b.HasIndex("RegistroVendaIdCompra");
 
                     b.ToTable("DetalhesVendas");
                 });
@@ -221,21 +227,21 @@ namespace LivrariaSouza.DataAccess.Migrations
 
             modelBuilder.Entity("LivrariaSouza.Models.Models.DetalhesVenda", b =>
                 {
-                    b.HasOne("LivrariaSouza.Models.Models.RegistroDeVendas", "RegistroDeVendas")
-                        .WithMany()
-                        .HasForeignKey("IdRegistroVenda")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LivrariaSouza.Models.Models.Livro", "Livro")
                         .WithMany()
                         .HasForeignKey("LivroId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("LivrariaSouza.Models.Models.RegistroDeVendas", "RegistroVenda")
+                        .WithMany()
+                        .HasForeignKey("RegistroVendaIdCompra")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Livro");
 
-                    b.Navigation("RegistroDeVendas");
+                    b.Navigation("RegistroVenda");
                 });
 
             modelBuilder.Entity("LivrariaSouza.Models.Models.RegistroDeVendas", b =>
