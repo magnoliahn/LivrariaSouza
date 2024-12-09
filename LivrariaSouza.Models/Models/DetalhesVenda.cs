@@ -15,10 +15,9 @@ namespace LivrariaSouza.Models.Models
         [ForeignKey("Livro")]
         public int LivroId { get; set; }
         public Livro Livro { get; set; } // Prop de navegação
-
         public string Titulo { get; set; }
         public string CapaLivro { get; set; }
-        public int ValorUnit { get; set; }
+        public decimal ValorUnit { get; set; }
         public int Quantidade { get; set; }
     }
 }

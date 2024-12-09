@@ -36,8 +36,8 @@ namespace LivrariaSouza.DataAccess.Migrations
                     b.Property<int>("Quantidade")
                         .HasColumnType("int");
 
-                    b.Property<int>("Subtotal")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("ValorUnit")
                         .HasColumnType("decimal(18,2)");
@@ -76,8 +76,8 @@ namespace LivrariaSouza.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ValorUnit")
-                        .HasColumnType("int");
+                    b.Property<decimal>("ValorUnit")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IdDetalhe");
 

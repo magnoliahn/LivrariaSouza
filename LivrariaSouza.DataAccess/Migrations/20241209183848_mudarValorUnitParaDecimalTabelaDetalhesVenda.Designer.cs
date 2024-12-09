@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LivrariaSouza.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241209165436_alterColumnType2")]
-    partial class alterColumnType2
+    [Migration("20241209183848_mudarValorUnitParaDecimalTabelaDetalhesVenda")]
+    partial class mudarValorUnitParaDecimalTabelaDetalhesVenda
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,6 +52,43 @@ namespace LivrariaSouza.DataAccess.Migrations
                     b.HasIndex("LivroId");
 
                     b.ToTable("Carrinhos");
+                });
+
+            modelBuilder.Entity("LivrariaSouza.Models.Models.DetalhesVenda", b =>
+                {
+                    b.Property<int>("IdDetalhe")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdDetalhe"));
+
+                    b.Property<string>("CapaLivro")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IdRegistroVenda")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LivroId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("ValorUnit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("IdDetalhe");
+
+                    b.HasIndex("IdRegistroVenda");
+
+                    b.HasIndex("LivroId");
+
+                    b.ToTable("DetalhesVendas");
                 });
 
             modelBuilder.Entity("LivrariaSouza.Models.Models.Livro", b =>
@@ -107,30 +144,17 @@ namespace LivrariaSouza.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCompra"));
 
-                    b.Property<string>("CapaLivro")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
-                    b.Property<int>("LivroId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantidade")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Titulo")
+                    b.Property<string>("NomeUsuario")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("ValorUnit")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IdCompra");
@@ -196,6 +220,25 @@ namespace LivrariaSouza.DataAccess.Migrations
                     b.Navigation("Livro");
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("LivrariaSouza.Models.Models.DetalhesVenda", b =>
+                {
+                    b.HasOne("LivrariaSouza.Models.Models.RegistroDeVendas", "RegistroDeVendas")
+                        .WithMany()
+                        .HasForeignKey("IdRegistroVenda")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LivrariaSouza.Models.Models.Livro", "Livro")
+                        .WithMany()
+                        .HasForeignKey("LivroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Livro");
+
+                    b.Navigation("RegistroDeVendas");
                 });
 
             modelBuilder.Entity("LivrariaSouza.Models.Models.RegistroDeVendas", b =>

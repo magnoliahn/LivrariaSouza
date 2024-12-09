@@ -14,16 +14,42 @@ namespace LivrariaSouza.Controllers
             _db = db;
         }
 
-        public void RegistraVendaFinalizada(Carrinho carrinho)
+        // Após finalizar a venda, o carrinho é limpo e a compra é registrada no histórico
+        public void RegistraVendaFinalizada(int usuarioId)
         {
-            var usuario = _db.Usuarios.FirstOrDefault(u => u.IdUsuario == carrinho.IdUsuario);
+            var livrosNoCarrinho = _db.Carrinhos.Where(c => c.IdUsuario ==  usuarioId).ToList();
+            var usuario = _db.Usuarios.FirstOrDefault(u => u.IdUsuario == usuarioId);
 
             var novoRegistro = new RegistroDeVendas
             {
-                IdUsuario = carrinho.IdUsuario,
+                IdUsuario = usuarioId,
                 NomeUsuario = usuario.Nome,
                 Data = DateTime.Now,
+                Total = livrosNoCarrinho.Sum(l => l.Subtotal)
             };
+
+            _db.RegistroDeVendas.Add(novoRegistro);
+            _db.SaveChanges();
+
+            foreach (var livro in livrosNoCarrinho)
+            {
+                var livroEmDestaque = _db.Livros.FirstOrDefault(l => l.LivroId == livro.LivroId);
+
+                var detalhesNovoRegistro = new DetalhesVenda
+                {
+                    IdRegistroVenda = novoRegistro.IdCompra,
+                    LivroId = livro.LivroId,
+                    Titulo = livroEmDestaque.Titulo,
+                    CapaLivro = livroEmDestaque.CapaLivro,
+                    ValorUnit = livroEmDestaque.ValorVenda,
+                    Quantidade = livro.Quantidade
+                };
+
+                _db.DetalhesVendas.Add(detalhesNovoRegistro);
+                _db.SaveChanges();
+            }
+
+            _db.Carrinhos.RemoveRange(livrosNoCarrinho);
         }
 
         // Métodos que retornam compras finalizadas
