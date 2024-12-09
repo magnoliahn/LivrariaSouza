@@ -15,4 +15,5 @@ namespace LivrariaSouza.Models.Models
         public DateTime Data { get; set; }
         public decimal Total { get; set; }
     }
+
 }

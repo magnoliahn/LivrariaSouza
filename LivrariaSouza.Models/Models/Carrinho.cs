@@ -15,6 +15,7 @@ namespace LivrariaSouza.Models.Models
         public Usuario Usuario { get; set; }
         public int Quantidade { get; set; }
         public decimal ValorUnit { get; set; }
-        public int Subtotal { get; set; }
+        public decimal Subtotal { get; set; }
+
     }
 }
