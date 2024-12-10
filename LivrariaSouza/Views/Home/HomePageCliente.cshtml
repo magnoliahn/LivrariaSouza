@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model IEnumerable<LivrariaSouza.Models.Models.Livro>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -165,36 +166,40 @@
 
 
     <div class="row">
-        @foreach (var livro in Model)
+        @if (Model != null)
         {
-            <div class="col-md-2">
-                <div class="card mb-4">
-                    <a href="@Url.Action("MostraDetalhesLivroCliente", "HomeCliente", new { id = livro.LivroId })">
-                        <img src="@livro.CapaLivro" class="card-img-top" alt="@livro.Titulo" />
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <a href="@Url.Action("MostraDetalhesLivroCliente", "HomeCliente", new { id = livro.LivroId })">@livro.Titulo</a>
-                        </h5>
-                        <p class="card-value">Estoque: @(livro.QntdEstoque == 0 ? "Esgotado" : livro.QntdEstoque.ToString()) </p>
-                        <p class="card-price">@livro.ValorVenda.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</p>
-                        @if (livro.QntdEstoque > 0)
-                        {
-                            <form class="adicionar-livro-form" method="post" action="@Url.Action("AdicionarLivroAoCarrinho", "Carrinho")">
-                                <input type="hidden" name="livroId" value="@livro.LivroId" />
-                                <input type="hidden" name="valorLivro" value="@livro.ValorVenda" />
-                                <label for="qntd-@livro.LivroId">Quantidade:</label>
-                                <input type="number" id="qntd-@livro.LivroId" name="qntdLivros" class="quantidade-input" min="1" max="@livro.QntdEstoque" value="1" />
-                                <button type="submit" class="btn btn-adicionar adicionar-livro-btn">Adicionar ao Carrinho</button>
-                            </form>
-                        }
-                        else
-                        {
-                            <p class="btn-esgotado">Esgotado</p>
-                        }
+            @foreach (var livro in Model)
+            {
+                <div class="col-md-2">
+                    <div class="card mb-4">
+                        <a href="@Url.Action("MostraDetalhesLivroCliente", "HomeCliente", new { id = livro.LivroId })">
+                            <img src="@livro.CapaLivro" class="card-img-top" alt="@livro.Titulo" />
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="@Url.Action("MostraDetalhesLivroCliente", "HomeCliente", new { id = livro.LivroId })">@livro.Titulo</a>
+                            </h5>
+                            <p class="card-value">Estoque: @(livro.QntdEstoque == 0 ? "Esgotado" : livro.QntdEstoque.ToString()) </p>
+                            <p class="card-price">@livro.ValorVenda.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</p>
+                            @if (livro.QntdEstoque > 0)
+                            {
+                                <form class="adicionar-livro-form" method="post" action="@Url.Action("AdicionarLivroAoCarrinho", "Carrinho")">
+                                    <input type="hidden" name="userId"/>
+                                    <input type="hidden" name="livroId" value="@livro.LivroId" />
+                                    <input type="hidden" name="valorLivro" value="@livro.ValorVenda" />
+                                    <label for="qntd-@livro.LivroId">Quantidade:</label>
+                                    <input type="number" id="qntd-@livro.LivroId" name="quantidade" class="quantidade-input" min="1" max="@livro.QntdEstoque" value="1" />
+                                    <button type="submit" class="btn btn-adicionar adicionar-livro-btn">Adicionar ao Carrinho</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <p class="btn-esgotado">Esgotado</p>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         }
     </div>
 </body>
