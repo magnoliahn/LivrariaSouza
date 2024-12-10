@@ -38,7 +38,9 @@ namespace LivrariaSouza.DataAccess
             });
 
             modelBuilder.Entity<Usuario>().HasData(
-                new Usuario { IdUsuario = 1, Nome = "Eduardo Azoia", Email = "Eduardo.Azoia@valtech.com", Senha = "123456", Telefone = "(48) 91234-8754" }
+                new Usuario { IdUsuario = 1, Nome = "Eduardo Azoia", Email = "Eduardo.Azoia@valtech.com", Senha = "123456", Telefone = "(48) 91234-8754" },
+               
+            new Usuario { IdUsuario = 2, Nome = "Will Silva", Email = "Willian.Silva@valtech.com", Senha = "98765", Telefone = "(48) 98594-2678" }
                 );
         }
     }

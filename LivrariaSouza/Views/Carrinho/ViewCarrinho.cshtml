@@ -1,10 +1,10 @@
-﻿@* @model LivrariaSouza.Models.Models.CarrinhoDeCompras
+﻿@model IEnumerable<LivrariaSouza.Models.Models.Carrinho>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes do Livro</title>
+    <title>Carrinho de Compras</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -59,13 +59,13 @@
             background-color: #f9f9f9;
         }
 
-            tr:nth-child(even) {
-                background-color: #e9e9e9;
-            }
+        tr:nth-child(even) {
+            background-color: #e9e9e9;
+        }
 
-            tr:hover {
-                background-color: #dcdcdc;
-            }
+        tr:hover {
+            background-color: #dcdcdc;
+        }
 
         .btn {
             border-radius: 5px;
@@ -77,18 +77,18 @@
             color: white;
         }
 
-            .btn-primary:hover {
-                background-color: #0056b3;
-            }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
 
         .btn-danger {
             background-color: #dc3545;
             color: white;
         }
 
-            .btn-danger:hover {
-                background-color: #c82333;
-            }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
 
         .btn-success {
             background-color: #28a745;
@@ -96,9 +96,9 @@
             margin-top: 20px;
         }
 
-            .btn-success:hover {
-                background-color: #218838;
-            }
+        .btn-success:hover {
+            background-color: #218838;
+        }
 
         img {
             border-radius: 5px;
@@ -119,7 +119,8 @@
             margin-right: 10px;
         }
     </style>
-
+</head>
+<body>
     <h2>Carrinho de Compras</h2>
     <a href="@Url.Action("HomePageCliente", "HomeCliente")" class="home-icon"><i class="fas fa-home"></i></a>
 
@@ -128,7 +129,7 @@
         <div class="alert alert-info">@TempData["Mensagem"]</div>
     }
 
-    @if (Model.Itens.Any())
+    @if (Model.Any())
     {
         <table class="table">
             <thead>
@@ -141,26 +142,28 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Itens)
+                @foreach (var item in Model)
                 {
                     <tr>
                         <td style="text-align: center; padding: 10px;">
-                            <img src="@item.ImagemLivro" alt="@item.NomeLivro" style="width: 50px; height: auto;" />
+                            <img src="@item.Livro.CapaLivro" alt="@item.Livro.Titulo" style="width: 50px; height: auto;" />
                             <br />
-                            <strong>@item.NomeLivro</strong>
+                            <strong>@item.Livro.Titulo</strong>
                         </td>
                         <td>
-                            <form asp-action="UpdateQuantidade" method="post">
-                                <input type="hidden" name="livroId" value="@item.IdItem" />
-                                <input type="number" name="qntdLivros" value="@item.QntdItem" min="1" style="width: 50px; text-align: center;" />
+                            <form asp-action="AtualizaQuantidade" method="post">
+                                <input type="hidden" name="userId" value="@item.IdUsuario" />
+                                <input type="hidden" name="livroId" value="@item.LivroId" />
+                                <input type="number" name="quantidade" value="@item.Quantidade" min="1" style="width: 50px; text-align: center;" />
                                 <button type="submit" class="btn btn-primary" style="margin-left: 5px;">Atualizar</button>
                             </form>
                         </td>
-                        <td>@item.ValorItem.ToString("C")</td>
-                        <td>@((item.QntdItem * item.ValorItem).ToString("C"))</td>
+                        <td>@item.ValorUnit.ToString("C")</td>
+                        <td>@((item.Quantidade * item.ValorUnit).ToString("C"))</td>
                         <td>
                             <form asp-action="RemoveDoCarrinho" method="post">
-                                <input type="hidden" name="livroId" value="@item.IdItem" />
+                                <input type="hidden" name="userId" value="@item.IdUsuario" />
+                                <input type="hidden" name="livroId" value="@item.LivroId" />
                                 <button type="submit" class="btn btn-danger">Remover</button>
                             </form>
                         </td>
@@ -170,7 +173,7 @@
             <tfoot>
                 <tr>
                     <td colspan="3"><strong>Total:</strong></td>
-                    <td>@Model.ValorTotal.ToString("C")</td>
+                    <td>@Model.Sum(i => i.Quantidade * i.ValorUnit).ToString("C")</td>
                     <td></td>
                 </tr>
             </tfoot>
@@ -182,6 +185,5 @@
     {
         <p>Seu carrinho está vazio.</p>
     }
-</head>
+</body>
 </html>
- *@

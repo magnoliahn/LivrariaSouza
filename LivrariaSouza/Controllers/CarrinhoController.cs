@@ -13,44 +13,39 @@ namespace LivrariaSouza.Controllers
             _db = db;
         }
 
-        // Exibe o carrinho
+        //Exibe o carrinho
         public IActionResult ViewCarrinho(int userId)
         {
+            if (userId == 0)
+            {
+                userId = 1;
+            }
             var carrinho = _db.Carrinhos.Include(c => c.Livro).Where(c => c.IdUsuario == userId).ToList();
+
+            if (carrinho == null || !carrinho.Any())
+            {
+                carrinho = new List<Carrinho>();
+            }
 
             return View(carrinho);
         }
-
         public IActionResult AdicionarLivroAoCarrinho(int userId, int livroId, int quantidade)
         {
+            userId = 1;
             var livro = _db.Livros.FirstOrDefault(l => l.LivroId == livroId);
 
-            if (livro == null)
+            if (livro == null || quantidade <= 0)
             {
-                TempData["Mensagem"] = "Livro não encontrado.";
+                TempData["Mensagem"] = livro == null
+                    ? $"Erro: O livro {livro.Titulo} não foi encontrado."
+                    : "A quantidade deve ser maior que zero. Por favor, insira um valor válido.";
                 return RedirectToAction("ViewCarrinho", new { userId });
             }
-            if (quantidade <= 0)
-            {
-                TempData["Mensagem"] = "A quantidade deve ser um número inteiro e positivo.";
-                return RedirectToAction("ViewCarrinho", new { userId });
-            }
+
             var carrinho = _db.Carrinhos.FirstOrDefault(c => c.LivroId == livroId && c.IdUsuario == userId);
 
-            if (carrinho == null)
-            {
-                carrinho = new Carrinho
-                {
-                    LivroId = livroId,
-                    IdUsuario = userId,
-                    Quantidade = quantidade,
-                    ValorUnit = livro.ValorVenda,
-                    Subtotal = (int)(livro.ValorVenda * quantidade)
-                };
 
-                _db.Carrinhos.Add(carrinho);
-            }
-            else
+            if (carrinho != null)
             {
                 int livrosNoCarrinho = carrinho.Quantidade + quantidade;
                 if (livrosNoCarrinho > livro.QntdEstoque)
@@ -61,14 +56,44 @@ namespace LivrariaSouza.Controllers
                 carrinho.Quantidade += quantidade;
                 carrinho.Subtotal = (int)(carrinho.Quantidade * carrinho.ValorUnit);
             }
-            _db.SaveChanges();
-            TempData["Mensagem"] = "Livro adicionado ao carrinho com sucesso!";
+
+            else
+            {
+                carrinho = new Carrinho
+                {
+                    LivroId = livroId,
+                    IdUsuario = userId,
+                    Quantidade = quantidade,
+                    ValorUnit = livro.ValorVenda,
+                    Subtotal = livro.ValorVenda * quantidade,
+
+                };
+
+                _db.Carrinhos.Add(carrinho);
+            }
+
+
+            try
+            {
+                _db.SaveChanges();
+                TempData["Mensagem"] = "Livro adicionado ao carrinho com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                TempData["Mensagem"] = $"Erro ao salvar o carrinho: {ex.Message}";
+            }
+
             return RedirectToAction("ViewCarrinho", new { userId });
         }
 
 
+
         public IActionResult RemoveDoCarrinho(int userId, int livroId)
         {
+            if (userId == 0)
+            {
+                userId = 1;
+            }
             var carrinho = _db.Carrinhos.FirstOrDefault(c => c.LivroId == livroId && c.IdUsuario == userId);
 
             if (carrinho != null)
@@ -95,10 +120,10 @@ namespace LivrariaSouza.Controllers
             if (carrinho != null)
             {
                 carrinho.Quantidade = quantidade;
-                carrinho.Subtotal = (int)(carrinho.ValorUnit * quantidade);
-
+                carrinho.Subtotal = carrinho.Quantidade * carrinho.ValorUnit;
                 _db.SaveChanges();
             }
+
 
             TempData["Mensagem"] = "Quantidade atualizada com sucesso!";
             return RedirectToAction("ViewCarrinho", new { userId });
@@ -106,7 +131,7 @@ namespace LivrariaSouza.Controllers
     }
 }
 
-        // Renderiza a página para finalizar compra
+// Renderiza a página para finalizar compra
 //        [HttpGet]
 //        public IActionResult FinalizarCompra()
 //        {

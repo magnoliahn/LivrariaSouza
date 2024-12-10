@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LivrariaSouza.Models.Models
 {
     public class Carrinho
     {
+        [Key]
         public int IdCarrinho { get; set; }
 
         [ForeignKey("Livro")]
@@ -15,6 +17,7 @@ namespace LivrariaSouza.Models.Models
         public Usuario Usuario { get; set; }
         public int Quantidade { get; set; }
         public decimal ValorUnit { get; set; }
-        public int Subtotal { get; set; }
+        public decimal Subtotal { get; set; }
+
     }
 }
