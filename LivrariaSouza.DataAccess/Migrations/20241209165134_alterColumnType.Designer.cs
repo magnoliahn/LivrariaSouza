@@ -4,6 +4,7 @@ using LivrariaSouza.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LivrariaSouza.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241209165134_alterColumnType")]
+    partial class alterColumnType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,8 +130,8 @@ namespace LivrariaSouza.DataAccess.Migrations
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("ValorUnit")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("ValorUnit")
+                        .HasColumnType("int");
 
                     b.HasKey("IdCompra");
 
@@ -173,14 +176,6 @@ namespace LivrariaSouza.DataAccess.Migrations
                             Nome = "Eduardo Azoia",
                             Senha = "123456",
                             Telefone = "(48) 91234-8754"
-                        },
-                        new
-                        {
-                            IdUsuario = 2,
-                            Email = "Willian.Silva@valtech.com",
-                            Nome = "Will Silva",
-                            Senha = "98765",
-                            Telefone = "(48) 98594-2678"
                         });
                 });
 
