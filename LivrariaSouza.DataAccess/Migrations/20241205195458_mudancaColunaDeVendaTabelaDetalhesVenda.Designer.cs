@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LivrariaSouza.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241209165436_alterColumnType2")]
-    partial class alterColumnType2
+    [Migration("20241205195458_mudancaColunaDeVendaTabelaDetalhesVenda")]
+    partial class mudancaColunaDeVendaTabelaDetalhesVenda
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,8 +39,8 @@ namespace LivrariaSouza.DataAccess.Migrations
                     b.Property<int>("Quantidade")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Subtotal")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Subtotal")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("ValorUnit")
                         .HasColumnType("decimal(18,2)");
@@ -52,6 +52,46 @@ namespace LivrariaSouza.DataAccess.Migrations
                     b.HasIndex("LivroId");
 
                     b.ToTable("Carrinhos");
+                });
+
+            modelBuilder.Entity("LivrariaSouza.Models.Models.DetalhesVenda", b =>
+                {
+                    b.Property<int>("IdDetalhe")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdDetalhe"));
+
+                    b.Property<string>("CapaLivro")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IdRegistroVenda")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LivroId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RegistroVendaIdCompra")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ValorUnit")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdDetalhe");
+
+                    b.HasIndex("LivroId");
+
+                    b.HasIndex("RegistroVendaIdCompra");
+
+                    b.ToTable("DetalhesVendas");
                 });
 
             modelBuilder.Entity("LivrariaSouza.Models.Models.Livro", b =>
@@ -107,30 +147,17 @@ namespace LivrariaSouza.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCompra"));
 
-                    b.Property<string>("CapaLivro")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
-                    b.Property<int>("LivroId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantidade")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Titulo")
+                    b.Property<string>("NomeUsuario")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("ValorUnit")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IdCompra");
@@ -196,6 +223,25 @@ namespace LivrariaSouza.DataAccess.Migrations
                     b.Navigation("Livro");
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("LivrariaSouza.Models.Models.DetalhesVenda", b =>
+                {
+                    b.HasOne("LivrariaSouza.Models.Models.Livro", "Livro")
+                        .WithMany()
+                        .HasForeignKey("LivroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LivrariaSouza.Models.Models.RegistroDeVendas", "RegistroVenda")
+                        .WithMany()
+                        .HasForeignKey("RegistroVendaIdCompra")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Livro");
+
+                    b.Navigation("RegistroVenda");
                 });
 
             modelBuilder.Entity("LivrariaSouza.Models.Models.RegistroDeVendas", b =>

@@ -9,6 +9,7 @@ namespace LivrariaSouza.DataAccess
         public DbSet<Carrinho> Carrinhos { get; set; }
         public DbSet<RegistroDeVendas> RegistroDeVendas { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<DetalhesVenda> DetalhesVendas { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
