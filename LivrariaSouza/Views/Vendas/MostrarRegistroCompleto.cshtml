@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da Compra</title>
+</head>
+<body>
+    <h2>Detalhes da Compra</h2>
+
+    <!-- Informações gerais da compra -->
+    <div>
+        <p><strong>ID da Compra:</strong> @Model.RegistroDeVenda.IdCompra</p>
+        <p><strong>Usuário:</strong> @Model.RegistroDeVenda.NomeUsuario (@Model.RegistroDeVenda.IdUsuario)</p>
+        <p><strong>Data:</strong> @Model.RegistroDeVenda.Data.ToString("dd/MM/yyyy")</p>
+        <p><strong>Total:</strong> R$ @Model.RegistroDeVenda.Total.ToString("F2")</p>
+    </div>
+
+    <!-- Tabela com os itens da compra -->
+    <table border="1" style="width: 100%; text-align: left;">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantidade</th>
+                <th>Preço Unitário</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ItensVenda)
+            {
+                <tr>
+                    <td>@item.Titulo</td>
+                    <td>@item.Quantidade</td>
+                    <td>R$ @item.ValorUnit.ToString("F2")</td>
+                    <td>R$ @(item.Quantidade * item.ValorUnit).ToString("F2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a href="@Url.Action("MostrarRegistroSimples", "Vendas")" class="btn btn-primary">Voltar</a>
+</body>
+</html>

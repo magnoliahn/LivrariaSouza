@@ -86,8 +86,6 @@ namespace LivrariaSouza.Controllers
             return RedirectToAction("ViewCarrinho", new { userId });
         }
 
-
-
         public IActionResult RemoveDoCarrinho(int userId, int livroId)
         {
             if (userId == 0)
@@ -128,44 +126,6 @@ namespace LivrariaSouza.Controllers
             TempData["Mensagem"] = "Quantidade atualizada com sucesso!";
             return RedirectToAction("ViewCarrinho", new { userId });
         }
+
     }
 }
-
-// Renderiza a página para finalizar compra
-//        [HttpGet]
-//        public IActionResult FinalizarCompra()
-//        {
-//            return View();
-//        }
-
-//        // Processa a finalização da compra
-//        [HttpPost]
-//        public IActionResult FinalizarCompra(FinalizarCompra model, CarrinhoDeCompras carrinho)
-//        {
-//            if (!ModelState.IsValid)
-//            {
-//                return View(model);
-//            }
-//            UpdateStock(carrinho);
-//            HttpContext.Session.Remove("Carrinho");
-
-//            TempData["Mensagem"] = "Compra finalizada com sucesso!";
-//            return RedirectToAction("ViewCarrinho");
-//        }
-
-//        public void UpdateStock(CarrinhoDeCompras carrinho)
-//        {
-//            carrinho = HttpContext.Session.GetObjectFromJson<CarrinhoDeCompras>("Carrinho") ?? new CarrinhoDeCompras();
-
-//            foreach (var item in carrinho.Itens)
-//            {
-//                var book = _db.Livros.FirstOrDefault(b => b.LivroId == item.IdItem);
-//                if (book != null)
-//                {
-//                    book.QntdEstoque = book.QntdEstoque - item.QntdItem;
-//                    _db.SaveChanges();
-//                }
-//            }
-//        }
-//    }
-//}

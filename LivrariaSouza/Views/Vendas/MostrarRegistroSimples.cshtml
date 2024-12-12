@@ -1,0 +1,39 @@
+﻿@using LivrariaSouza.Models.Models.ViewModels
+@model IEnumerable<RegistroDeVendaVM>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Compras</title>
+</head>
+<body>
+    <h2>Histórico de Compras</h2>
+    <table border="1" style="width: 100%; text-align: left;">
+        <thead>
+            <tr>
+                <th>ID da Compra</th>
+                <th>Usuário</th>
+                <th>Data</th>
+                <th>Total</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var compra in Model)
+            {
+                <tr>
+                    <td>@compra.IdCompra</td>
+                    <td>@compra.NomeUsuario</td>
+                    <td>@compra.Data.ToString("dd/MM/yyyy")</td>
+                    <td>R$ @compra.Total.ToString("F2")</td>
+                    <td>
+                        <a href="@Url.Action("MostrarRegistroCompleto", "Vendas", new { idRegistroDeVenda = compra.IdCompra })">Detalhes</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

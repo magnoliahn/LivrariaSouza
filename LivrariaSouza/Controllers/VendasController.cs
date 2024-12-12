@@ -14,6 +14,27 @@ namespace LivrariaSouza.Controllers
             _db = db;
         }
 
+        public IActionResult FinalizarCompra()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Finalizar(FinalizarCompra model)
+        {
+            int usuarioId = 1;
+
+            if (ModelState.IsValid)
+            {
+                // Lógica para processar os dados do pedido
+                RegistraVendaFinalizada(usuarioId);
+                return RedirectToAction("HomePageCliente", "HomeCliente");
+            }
+
+            // Retorna a view com mensagens de validação
+            return NotFound();
+        }
+
         // Após finalizar a venda, o carrinho é limpo e a compra é registrada no histórico
         public void RegistraVendaFinalizada(int usuarioId)
         {
@@ -49,7 +70,9 @@ namespace LivrariaSouza.Controllers
                 _db.SaveChanges();
             }
 
+            AtualizaEstoque(livrosNoCarrinho);
             _db.Carrinhos.RemoveRange(livrosNoCarrinho);
+            _db.SaveChanges();
         }
 
         // Métodos que retornam compras finalizadas
@@ -69,9 +92,27 @@ namespace LivrariaSouza.Controllers
 
         public ActionResult MostrarRegistroCompleto(int idRegistroDeVenda)
         {
-            var detalhes = _db.RegistroDeVendas.Where(r => r.IdCompra == idRegistroDeVenda).ToList();
+            var registro = _db.RegistroDeVendas.FirstOrDefault(r => r.IdCompra == idRegistroDeVenda);
 
-            return View(detalhes);
+            var itens = _db.DetalhesVendas.Where(i => i.IdRegistroVenda == idRegistroDeVenda).ToList();
+
+            var viewModel = new RegistroDeVendaCompletoVM
+            {
+                RegistroDeVenda = registro,
+                ItensVenda = itens
+            };
+
+            return View(viewModel);
+        }
+
+        public void AtualizaEstoque(List<Carrinho> compraFinalizada)
+        {
+            foreach (var livro in compraFinalizada)
+            {
+                var livroEmDestaque = _db.Livros.FirstOrDefault(l => l.LivroId == livro.LivroId);
+                livroEmDestaque.QntdEstoque -= livro.Quantidade;
+                _db.SaveChanges();
+            }
         }
     }
 }
