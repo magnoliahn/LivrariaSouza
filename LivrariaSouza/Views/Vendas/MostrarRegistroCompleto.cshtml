@@ -4,41 +4,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes da Compra</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to bottom right, #f0f8ff, #e6e6fa);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        h2 {
+            text-align: center;
+            color: #444;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        section {
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        .info, .table-container {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+            .info p {
+                font-size: 1.1rem;
+                margin: 10px 0;
+            }
+
+            .info strong {
+                color: #000;
+            }
+
+            .table-container table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 10px;
+            }
+
+            .table-container th,
+            .table-container td {
+                padding: 15px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .table-container th {
+                background-color: #007bff;
+                color: #fff;
+                font-weight: bold;
+            }
+
+            .table-container tr:hover {
+                background-color: #f9f9f9;
+            }
+
+            .table-container td {
+                color: #555;
+                font-size: 1rem;
+            }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        a.btn {
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+            padding: 12px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+            a.btn:hover {
+                background-color: #0056b3;
+                transform: scale(1.05);
+            }
+    </style>
 </head>
 <body>
     <h2>Detalhes da Compra</h2>
 
     <!-- Informações gerais da compra -->
-    <div>
+    <section class="info">
         <p><strong>ID da Compra:</strong> @Model.RegistroDeVenda.IdCompra</p>
         <p><strong>Usuário:</strong> @Model.RegistroDeVenda.NomeUsuario (@Model.RegistroDeVenda.IdUsuario)</p>
         <p><strong>Data:</strong> @Model.RegistroDeVenda.Data.ToString("dd/MM/yyyy")</p>
         <p><strong>Total:</strong> R$ @Model.RegistroDeVenda.Total.ToString("F2")</p>
-    </div>
+    </section>
 
     <!-- Tabela com os itens da compra -->
-    <table border="1" style="width: 100%; text-align: left;">
-        <thead>
-            <tr>
-                <th>Item</th>
-                <th>Quantidade</th>
-                <th>Preço Unitário</th>
-                <th>Subtotal</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.ItensVenda)
-            {
+    <section class="table-container">
+        <table>
+            <thead>
                 <tr>
-                    <td>@item.Titulo</td>
-                    <td>@item.Quantidade</td>
-                    <td>R$ @item.ValorUnit.ToString("F2")</td>
-                    <td>R$ @(item.Quantidade * item.ValorUnit).ToString("F2")</td>
+                    <th>Item</th>
+                    <th>Quantidade</th>
+                    <th>Preço Unitário</th>
+                    <th>Subtotal</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ItensVenda)
+                {
+                    <tr>
+                        <td>@item.Titulo</td>
+                        <td>@item.Quantidade</td>
+                        <td>R$ @item.ValorUnit.ToString("F2")</td>
+                        <td>R$ @(item.Quantidade * item.ValorUnit)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
 
-    <a href="@Url.Action("MostrarRegistroSimples", "Vendas")" class="btn btn-primary">Voltar</a>
+    <div class="btn-container">
+        <a href="@Url.Action("MostrarRegistroSimples", "Vendas")" class="btn">Voltar</a>
+    </div>
 </body>
 </html>
