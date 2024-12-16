@@ -142,7 +142,7 @@
             <span asp-validation-for="ValorCompraString" class="text-danger"></span>
         </div>
         <div>
-            <label for="AnoLancamento">Ano de Lançamento</label>
+            <label for="AnoLancamento">Data de Lançamento</label>
             <input type="date" asp-for="DataLancamento" required max="@DateTime.Now.ToString("yyyy-MM-dd")" title="Data de lançamento inválida." />
 
             <span asp-validation-for="DataLancamento" class="text-danger"></span>
