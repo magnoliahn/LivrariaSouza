@@ -112,7 +112,7 @@
 
     @if (TempData["Mensagem"] != null)
     {
-        <div class="alert alert-info">@TempData["Mensagem"]</div>
+        <div class="alert alert-info">@Html.Raw(TempData["Mensagem"])</div>
     }
 
     @if (Model.Any())

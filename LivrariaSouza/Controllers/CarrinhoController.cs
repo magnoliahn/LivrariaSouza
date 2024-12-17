@@ -107,9 +107,16 @@ namespace LivrariaSouza.Controllers
         [HttpPost]
         public IActionResult AtualizaQuantidade(int userId, int livroId, int quantidade)
         {
+            var livro = _db.Livros.FirstOrDefault(l => l.LivroId == livroId);
+
             if (quantidade <= 0)
             {
                 TempData["Mensagem"] = "A quantidade deve ser um número inteiro e positivo.";
+                return RedirectToAction("ViewCarrinho", new { userId });
+            }
+            else if((livro != null) && (quantidade > livro.QntdEstoque))
+            {
+                TempData["Mensagem"] = $"Quantidade inválida. <br> Quantidade máxima disponível: {livro.QntdEstoque}"; 
                 return RedirectToAction("ViewCarrinho", new { userId });
             }
 
