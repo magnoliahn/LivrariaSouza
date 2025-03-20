@@ -31,9 +31,7 @@ Este projeto foi desenvolvido com o intuito de demonstrar habilidades em desenvo
 
 ---
 
-## **🚀 Como Executar o Projeto**  
-
-### **Pré-requisitos**  
+## **Pré-requisitos**  
 
 - Visual Studio 2019 ou superior  
 - SQL Server  
